@@ -24,14 +24,14 @@ img {
     display: block;
 }
 
-/* --- PHẦN 1: SẢN PHẨM NỔI BẬT (NỀN ĐỎ) --- */
+/* --- PHẦN 1: SẢN PHẨM NỔI BẬT (phần bo viền bên ngoài)*/
 .hot-deal-section {
     background: linear-gradient(90deg, #ff5151 0%, #ff0000 100%);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
 }
-
+/* Chữ tiêu đề sản phẩm nổi bật */
 .section-title-hot {
     text-align: center;
     color: white;
@@ -45,14 +45,14 @@ img {
     justify-content: center;
     gap: 10px;
 }
-
+/* chia thành 5 cột sản phẩm */
 .product-grid-5 {
     display: grid;
     grid-template-columns: repeat(5, 1fr); /* 5 cột */
     gap: 10px;
 }
 
-/* Thẻ sản phẩm chung */
+/* Phần viền của từng sản phẩm */
 .product-card {
     background: white;
     border-radius: 8px;
@@ -63,40 +63,15 @@ img {
     flex-direction: column;
     justify-content: space-between;
 }
-
+/* di chuột vô sản phẩm */
 .product-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* Nhãn giảm giá & Trả góp */
-.badge-sale {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    background-color: #d70018;
-    color: white;
-    font-size: 11px;
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-weight: bold;
-    z-index: 2;
-}
 
-.badge-installment {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: #eeffff;
-    color: #007bff;
-    font-size: 10px;
-    padding: 2px 5px;
-    border-radius: 3px;
-    border: 1px solid #b3e0ff;
-    z-index: 2;
-}
 
-/* Hình ảnh sản phẩm */
+/* Hình ảnh sản phẩm ở sản phẩm nội bật */
 .p-img {
     margin: 20px 0 10px 0;
     text-align: center;
@@ -105,7 +80,7 @@ img {
     align-items: center;
     justify-content: center;
 }
-
+/* hình ảnh sản phẩm ở các phần khác */
 .p-img img {
     max-height: 100%;
 }
@@ -133,6 +108,7 @@ img {
     margin-bottom: 5px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: 36px;
@@ -145,23 +121,9 @@ img {
     font-size: 16px;
 }
 
-.p-price-old {
-    color: #999;
-    text-decoration: line-through;
-    font-size: 12px;
-}
 
-/* Nút yêu thích */
-.p-action {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 5px;
-    color: #007bff;
-    font-size: 12px;
-    align-items: center;
-    cursor: pointer;
-}
-.p-action span { margin-left: 4px; }
+
+
 
 /* --- PHẦN 2: THƯƠNG HIỆU (Đã sửa cho Logo ảnh) --- */
 .brands-section {
@@ -279,22 +241,6 @@ img {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.circle-discount {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #d70018;
-    color: white;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: bold;
-    z-index: 2;
-}
 
 .cat-img-container {
         height: 150px;
@@ -330,7 +276,7 @@ img {
     font-weight: bold;
     font-size: 15px;
 }
-.filter-title-icon { margin-right: 8px; font-size: 18px; }
+
 
 /* Hàng nút lọc chính */
 .filter-list {
