@@ -30,7 +30,7 @@ body {
     gap: 10px;
 }
 
-.header .header-left .header-logo{
+.header .header-left .header-logo {
     margin: 0;
 }
 
@@ -84,4 +84,161 @@ body {
     text-decoration: none;
     transition: 0.3s;
     gap: 12px;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1 {
+    color: black;
+}
+
+.content {
+    position: absolute;
+    top: 110px;
+    left: 220px;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    overflow: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Quản lý danh mục */
+
+.quanlydanhmuc .main-title {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.quanlydanhmuc .main-title h2 {
+    color: #333;
+    font-size: 24px;
+}
+
+.quanlydanhmuc .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.quanlydanhmuc .search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.quanlydanhmuc .search-box input {
+    border: none;
+    padding: 10px 15px;
+    outline: none;
+    font-size: 14px;
+    width: 250px;
+}
+
+.quanlydanhmuc .search-box .btn-search {
+    background: #f1f1f1;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-left: 1px solid #ccc;
+}
+
+.quanlydanhmuc .search-box .btn-search:hover {
+    background: #e0e0e0;
+}
+
+
+.quanlydanhmuc .table-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+}
+
+.quanlydanhmuc .table-admin {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.quanlydanhmuc .table-admin th,
+.quanlydanhmuc .table-admin td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.quanlydanhmuc .table-admin th {
+    background-color: #f8f9fa;
+    color: #444;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.quanlydanhmuc .table-admin tr:hover {
+    background-color: #f1f1f1;
+}
+
+.quanlydanhmuc .table-admin td {
+    color: #555;
+    font-size: 14px;
+}
+
+.quanlydanhmuc .btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    display: inline-block;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.quanlydanhmuc .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.quanlydanhmuc .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.quanlydanhmuc .btn-edit {
+    background-color: #ffc107;
+    color: #333;
+    margin-right: 5px;
+    font-weight: 500;
+}
+
+.quanlydanhmuc .btn-edit:hover {
+    background-color: #e0a800;
+}
+
+.quanlydanhmuc .btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.quanlydanhmuc .btn-delete:hover {
+    background-color: #c82333;
 }
