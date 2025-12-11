@@ -26,7 +26,7 @@
     <div class="sidebar">
         <ul>
             <li><a href="admin.php?page=quanlydanhmuc">Quản lý danh mục</a></li>
-            <li><a href="">Quản lý sản phẩm</a></li>
+            <li><a href="admin.php?page=quanlysanpham">Quản lý sản phẩm</a></li>
             <li><a href="">Quản lý đơn hàng</a></li>
             <li><a href="">Cài đặt</a></li>
         </ul>
@@ -43,6 +43,9 @@
         switch ($page) {
             case 'quanlydanhmuc':
                 include 'quanlydanhmuc.php';
+                break;
+            case 'quanlysanpham':
+                include 'quanlysanpham.php';
                 break;
             
             default:
