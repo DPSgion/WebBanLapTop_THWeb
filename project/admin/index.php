@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/style_admin.css">
     <title>Admin Page</title>
+    
+    <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 
 <body>
@@ -17,7 +19,7 @@
         </a>
         <div class="header-right">
             <p class="admin-name">Admin Name</p>
-            <a href="#" class="logout-btn">Đăng xuất</a>
+            <a href="logout.php" class="logout-btn">Đăng xuất</a>
         </div>
     </div>
 
@@ -51,5 +53,4 @@
     </div>
 
 </body>
-
 </html>

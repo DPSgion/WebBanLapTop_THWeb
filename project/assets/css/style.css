@@ -1,0 +1,354 @@
+/* --- CÀI ĐẶT CHUNG --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 10px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- PHẦN 1: SẢN PHẨM NỔI BẬT (phần bo viền bên ngoài)*/
+.hot-deal-section {
+    background: linear-gradient(90deg, #ff5151 0%, #ff0000 100%);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+/* Chữ tiêu đề sản phẩm nổi bật */
+.section-title-hot {
+    text-align: center;
+    color: white;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+/* chia thành 5 cột sản phẩm */
+.product-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 cột */
+    gap: 10px;
+}
+
+/* Phần viền của từng sản phẩm */
+.product-card {
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+/* di chuột vô sản phẩm */
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+
+
+/* Hình ảnh sản phẩm ở sản phẩm nội bật */
+.p-img {
+    margin: 20px 0 10px 0;
+    text-align: center;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* hình ảnh sản phẩm ở các phần khác */
+.p-img img {
+    max-height: 100%;
+}
+
+/* Thông tin cấu hình (màu đỏ nhỏ) */
+.p-specs {
+    background: #fcebeb;
+    color: #d70018;
+    font-size: 10px;
+    padding: 3px;
+    border-radius: 3px;
+    text-align: center;
+    margin-bottom: 5px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Tên sản phẩm */
+.p-name {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 36px;
+}
+
+/* Giá */
+.p-price-current {
+    color: #d70018;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+
+
+
+/* --- PHẦN 2: THƯƠNG HIỆU (Đã sửa cho Logo ảnh) --- */
+.brands-section {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.brands-section h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.brand-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Tự động xuống dòng nếu nhiều logo */
+}
+
+.brand-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    /* Bỏ padding lớn, chỉ để padding nhỏ để ảnh không dính sát viền */
+    padding: 5px 10px; 
+    
+    /* Căn giữa logo theo cả chiều dọc và ngang */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Đặt kích thước cố định cho ô chứa để các ô đều nhau */
+    height: 50px; 
+    width: 120px; /* Bạn có thể tăng giảm tùy kích thước logo mong muốn */
+    
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden; /* Ẩn phần thừa nếu ảnh quá to */
+}
+
+/* Hiệu ứng khi di chuột vào ô logo */
+.brand-item:hover {
+    border-color: #288ad6; /* Màu xanh đặc trưng */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+/* --- QUAN TRỌNG: CSS CHO ẢNH LOGO --- */
+.brand-item img {
+    max-width: 100%;  /* Ảnh không bao giờ to hơn chiều ngang ô chứa */
+    max-height: 100%; /* Ảnh không bao giờ to hơn chiều cao ô chứa */
+    object-fit: contain; /* Giữ nguyên tỉ lệ ảnh, không bị méo/dẹt */
+    display: block;
+}
+
+/* --- PHẦN 3: LAPTOP MỚI (TAB STYLE) --- */
+.category-section {
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.cat-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+}
+
+.cat-title {
+    background: #d70018;
+    color: white;
+    padding: 10px 30px 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+    /* Tạo hình vát chéo */
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    margin-right: 10px;
+}
+
+.cat-nav {
+    display: flex;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.cat-nav a {
+    text-decoration: none;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.cat-nav a:hover { color: #d70018; }
+
+.cat-view-all {
+    margin-right: 20px;
+    font-size: 12px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.cat-body {
+    padding: 15px;
+}
+
+/* Chỉnh sửa style thẻ sản phẩm cho phần category (khác một chút so với phần hot) */
+.cat-body .product-card {
+    border: 1px solid #eee;
+    box-shadow: none;
+}
+.cat-body .product-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+.cat-img-container {
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+}
+
+/* --- RESPONSIVE CƠ BẢN --- */
+@media (max-width: 1024px) {
+    .product-grid-5 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 768px) {
+    .product-grid-5 { grid-template-columns: repeat(2, 1fr); }
+    .cat-nav { display: none; } /* Ẩn menu phụ trên mobile cho gọn */
+}
+
+/* --- PHẦN 4: FILTER --- */
+.filter-section {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px; /* Khoảng cách với phần bên dưới */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Tiêu đề bộ lọc */
+.filter-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+
+/* Hàng nút lọc chính */
+.filter-list {
+    display: flex;
+    flex-wrap: wrap; /* Tự xuống dòng nếu màn hình nhỏ */
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-btn {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #333;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+    min-width: 80px; /* Độ rộng tối thiểu cho đẹp */
+}
+
+/* Icon mũi tên nhỏ bên cạnh chữ */
+.arrow-down {
+    font-size: 8px;
+    margin-left: 6px;
+    color: #666;
+}
+
+.filter-btn:hover {
+    border-color: #288ad6;
+    color: #288ad6;
+    background-color: #f8faff;
+}
+.filter-btn:hover .arrow-down { color: #288ad6; }
+
+/* Hàng lọc nhanh (Tags) */
+.quick-filter-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px dashed #eee; /* Đường kẻ phân cách mờ */
+}
+
+.quick-tag {
+    border: 1px solid #eee;
+    background: #f9f9f9;
+    padding: 5px 10px;
+    border-radius: 20px; /* Bo tròn kiểu viên thuốc */
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.quick-tag:hover {
+    background: #ffebeb; /* Màu nền đỏ nhạt khi hover */
+    color: #d70018;      /* Chữ đỏ */
+    border-color: #d70018;
+}
+
+/* --- Responsive cho bộ lọc --- */
+@media (max-width: 768px) {
+    .filter-list {
+        /* Trên điện thoại cho phép lướt ngang nếu muốn, hoặc để wrap như hiện tại */
+        gap: 8px;
+    }
+    .filter-btn {
+        flex-grow: 1; /* Nút tự giãn đầy màn hình mobile */
+        justify-content: center;
+    }
+}
