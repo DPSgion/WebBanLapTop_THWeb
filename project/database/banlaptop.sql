@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3306
--- Thời gian đã tạo: Th12 05, 2025 lúc 01:31 AM
+-- Thời gian đã tạo: Th12 12, 2025 lúc 12:37 AM
 -- Phiên bản máy phục vụ: 8.3.0
 -- Phiên bản PHP: 8.2.18
 
@@ -109,6 +109,21 @@ CREATE TABLE IF NOT EXISTS `gio_hang` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `hinh`
+--
+
+DROP TABLE IF EXISTS `hinh`;
+CREATE TABLE IF NOT EXISTS `hinh` (
+  `mahinh` int NOT NULL AUTO_INCREMENT,
+  `masanpham` int NOT NULL,
+  `urlhinh` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`mahinh`),
+  KEY `masanpham` (`masanpham`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `lua_chon_cau_hinh`
 --
 
@@ -116,7 +131,7 @@ DROP TABLE IF EXISTS `lua_chon_cau_hinh`;
 CREATE TABLE IF NOT EXISTS `lua_chon_cau_hinh` (
   `macauhinh` int NOT NULL AUTO_INCREMENT,
   `masanpham` int NOT NULL,
-  `ram` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `ram` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ocung` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `giatien` int NOT NULL,
   PRIMARY KEY (`macauhinh`),
@@ -133,11 +148,11 @@ DROP TABLE IF EXISTS `san_pham`;
 CREATE TABLE IF NOT EXISTS `san_pham` (
   `masanpham` int NOT NULL AUTO_INCREMENT,
   `mathuonghieu` int NOT NULL,
-  `tensanpham` int NOT NULL,
-  `cpu` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `vga` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `man_hinh` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `pin` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `tensanpham` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `cpu` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `vga` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `man_hinh` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `pin` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`masanpham`),
   KEY `mathuonghieu` (`mathuonghieu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -165,8 +180,8 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `userid` int NOT NULL AUTO_INCREMENT,
   `hoten` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sdt` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `matkhau` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `sdt` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `matkhau` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `role` int NOT NULL,
   PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -206,6 +221,12 @@ ALTER TABLE `don_hang`
 --
 ALTER TABLE `gio_hang`
   ADD CONSTRAINT `gio_hang_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `hinh`
+--
+ALTER TABLE `hinh`
+  ADD CONSTRAINT `hinh_ibfk_1` FOREIGN KEY (`masanpham`) REFERENCES `san_pham` (`masanpham`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `lua_chon_cau_hinh`
