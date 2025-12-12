@@ -341,6 +341,7 @@ img {
     border-color: #d70018;
 }
 
+
 /* --- Responsive cho bộ lọc --- */
 @media (max-width: 768px) {
     .filter-list {
@@ -352,3 +353,63 @@ img {
         justify-content: center;
     }
 }
+
+/* --- HEADER BAR (Nền đỏ) --- */
+.header{
+    background-color: #eb0707da; /* Màu đỏ FPT */
+    width: 100%;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.header-bar {
+
+}
+
+/* Biến thẻ UL thành Flex container để xếp hàng ngang */
+.header-bar ul {
+    display: flex; /* Quan trọng: Xếp các thẻ li nằm ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: space-between; /* Dàn đều khoảng cách */
+    list-style: none; /* Bỏ dấu chấm tròn đầu dòng */
+    margin: 0;
+    padding: 0 15px; /* Khoảng cách lề trái phải */
+    gap: 20px; /* Khoảng cách giữa các phần tử */
+}
+
+/* --- LOGO (Thẻ li thứ 1) --- */
+.header-bar li:first-child img {
+    height: 70px; /* Chiều cao logo cố định */
+    width: auto;
+    display: block;
+    
+}
+
+/* --- THANH TÌM KIẾM (Thẻ li thứ 2) --- */
+/* Dùng flex-grow: 1 để ô tìm kiếm tự phình to chiếm chỗ trống */
+.header-bar li:nth-child(2) {
+    flex-grow: 1; 
+    margin: 0 20px; /* Cách logo và icon user một đoạn */
+    text-align: center;  
+}
+
+.header-bar-search {
+    width: 80%;
+    padding: 10px 15px;
+    border-radius: 20px; /* Bo tròn giống hình */
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+/* --- ICON USER & GIỎ HÀNG (Thẻ li thứ 3 và 4) --- */
+/* Chỉnh kích thước icon */
+.header-bar li:nth-child(3) img,
+.header-bar li:nth-child(4) img {
+    height: 40px; 
+    width: auto;
+    cursor: pointer;
+    /* Nếu icon của bạn màu đen, dùng lệnh này để đảo sang trắng */
+    /* filter: invert(1) brightness(100); */ 
+}
+
+
