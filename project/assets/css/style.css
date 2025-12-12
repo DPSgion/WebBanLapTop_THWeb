@@ -412,4 +412,73 @@ img {
     /* filter: invert(1) brightness(100); */ 
 }
 
+/* =================================== */
+/* footer */
+/* =================================== */
+.footer {
+    background-color: #1a1a1a; /* Màu đen xám sang trọng */
+    color: #b0b0b0;            /* Màu chữ xám nhạt cho dễ đọc trên nền đen */
+    padding: 60px 0;           /* Tạo khoảng thoáng trên dưới */
+}
 
+.footer-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Chia 3 cột đều nhau */
+    gap: 30px; /* Khoảng cách giữa các cột rộng hơn cho thoáng */
+}
+
+/* --- Phần danh sách trong footer --- */
+
+
+.footer-gioithieu li {
+    list-style: none;
+    font-size: 15px;       /* Kích thước chữ vừa phải */
+    margin-bottom: 12px;   /* Khoảng cách giữa các dòng */
+    transition: 0.3s;      /* Hiệu ứng mượt mà */
+}
+
+/* Hiệu ứng khi di chuột vào dòng chữ */
+.footer-gioithieu li:hover {
+    color: #fff;           /* Chuyển sang màu trắng sáng */
+    transform: translateX(5px); /* Dịch chuyển nhẹ sang phải */
+    
+}
+
+/* --- Tiêu đề các cột --- */
+.footer-gioithieu strong {
+    color: #fff;           /* Tiêu đề màu trắng nổi bật */
+    font-size: 18px;
+    text-transform: uppercase; /* Viết hoa toàn bộ */
+    display: block;        /* Để margin hoạt động tốt */
+    margin-bottom: 20px;   /* Cách xa nội dung bên dưới */
+   
+    padding-bottom: 10px;
+}
+
+/* --- Phần Copyright (Cuối trang) --- */
+.copyright {
+    background-color: #111; /* Màu tối hơn footer một chút để phân tách */
+    color: #777;
+    display: flex;
+    justify-content: center;
+    align-items: center;    /* Căn giữa dọc chuẩn */
+    height: 60px;
+    border-top: 1px solid #333; /* Đường kẻ ngăn cách mờ */
+}
+
+.copyright p {
+    font-size: 14px;
+    margin: 0; /* Xóa margin thừa để căn giữa chính xác */
+}
+
+/* --- RESPONSIVE: Giao diện trên điện thoại --- */
+@media (max-width: 768px) {
+    .footer-grid-3 {
+        grid-template-columns: 1fr; /* Trên điện thoại chuyển thành 1 cột */
+        text-align: center;         /* Căn giữa nội dung */
+    }
+
+    .footer-gioithieu strong {
+        margin: 0 auto 15px auto;   /* Căn giữa tiêu đề */
+    }
+}
