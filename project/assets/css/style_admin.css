@@ -286,8 +286,7 @@ h1 {
 
 /* Modal thêm danh mục */
 .modal {
-    display: none;
-    /* Mặc định ẩn */
+    display: none; /* Mặc định ẩn */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -337,17 +336,17 @@ h1 {
     text-decoration: none;
 }
 
-.modal .form-group {
+.form-group {
     margin: 15px 0px;
 }
 
-.modal .form-group label {
+.form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
 }
 
-.modal .form-group input {
+.form-group input {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -355,7 +354,7 @@ h1 {
     box-sizing: border-box;
 }
 
-.modal .form-actions {
+.form-actions {
     text-align: right;
     margin-top: 20px;
 }
@@ -471,3 +470,26 @@ h1 {
         transform: translateY(0);
     }
 }
+
+
+
+
+
+
+
+.doi-email,
+.doi-matkhau{
+    /* width: 500px; */
+    width: calc(100vw - 70%);
+
+    padding: 20px;
+    margin-bottom: 30px;
+
+    border: 1px solid rgb(107, 107, 107);
+    border-radius: 8px;
+}
+
+
+
+
+
