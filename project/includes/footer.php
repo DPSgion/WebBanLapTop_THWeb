@@ -14,7 +14,6 @@
                         <li><strong>ĐỒ ÁN WEB BÁN LAPTOP XỊN XÒ</strong></li>
                         <li>Địa chỉ: 180 Cao Lỗ</li>
                         <li>Email:nguyendinhcu2004@gmail.com</li>
- 
                     </ul>
                 </div>
 

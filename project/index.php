@@ -176,7 +176,7 @@ include("includes/header.php");
                     </div>
 
                     <div class="product-card">
-                        <div class="circle-discount">-4%</div>
+                   
                         <div class="cat-img-container">
                             <img src="assets/images/lenovo.jpg" alt="Laptop">
                         </div>
@@ -217,7 +217,7 @@ include("includes/header.php");
             <div class="cat-body">
                 <div class="product-grid-5">
                     <div class="product-card">
-                        <div class="circle-discount">-12%</div>
+           
                         <div class="cat-img-container">
                             <img src="assets/images/lenovo.jpg" alt="Laptop">
                         </div>
@@ -228,7 +228,7 @@ include("includes/header.php");
                     </div>
 
                     <div class="product-card">
-                        <div class="circle-discount">-12%</div>
+                        
                         <div class="cat-img-container">
                             <img src="assets/images/lenovo.jpg" alt="Laptop">
                         </div>
@@ -239,7 +239,7 @@ include("includes/header.php");
                     </div>
 
                     <div class="product-card">
-                        <div class="circle-discount">-12%</div>
+                     
                         <div class="cat-img-container">
                             <img src="assets/images/lenovo.jpg" alt="Laptop">
                         </div>
@@ -250,7 +250,7 @@ include("includes/header.php");
                     </div>
 
                     <div class="product-card">
-                        <div class="circle-discount">-12%</div>
+                        
                         <div class="cat-img-container">
                             <img src="assets/images/lenovo.jpg" alt="Laptop">
                         </div>
@@ -261,7 +261,7 @@ include("includes/header.php");
                     </div>
 
                      <div class="product-card">
-                        <div class="circle-discount">-12%</div>
+                        
                         <div class="cat-img-container">
                             <img src="assets/images/lenovo.jpg" alt="Laptop">
                         </div>
