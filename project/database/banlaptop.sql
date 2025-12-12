@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3306
--- Thời gian đã tạo: Th12 12, 2025 lúc 12:37 AM
+-- Thời gian đã tạo: Th12 12, 2025 lúc 01:38 AM
 -- Phiên bản máy phục vụ: 8.3.0
 -- Phiên bản PHP: 8.2.18
 
@@ -47,14 +47,12 @@ CREATE TABLE IF NOT EXISTS `chi_tiet_don_hang` (
 
 DROP TABLE IF EXISTS `chi_tiet_gio_hang`;
 CREATE TABLE IF NOT EXISTS `chi_tiet_gio_hang` (
-  `machitietgiohang` int NOT NULL AUTO_INCREMENT,
-  `magiohang` int NOT NULL,
+  `userid` int NOT NULL,
   `macauhinh` int NOT NULL,
   `soluong` int NOT NULL,
   `giatien` int NOT NULL,
-  PRIMARY KEY (`machitietgiohang`),
-  KEY `magiohang` (`magiohang`),
-  KEY `macauhinh` (`macauhinh`)
+  KEY `macauhinh` (`macauhinh`),
+  KEY `userid` (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -88,21 +86,6 @@ CREATE TABLE IF NOT EXISTS `don_hang` (
   `trangthai` int NOT NULL,
   `ngaydathang` date NOT NULL,
   PRIMARY KEY (`madonhang`),
-  KEY `userid` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `gio_hang`
---
-
-DROP TABLE IF EXISTS `gio_hang`;
-CREATE TABLE IF NOT EXISTS `gio_hang` (
-  `magiohang` int NOT NULL AUTO_INCREMENT,
-  `userid` int NOT NULL,
-  `tongtien` int NOT NULL,
-  PRIMARY KEY (`magiohang`),
   KEY `userid` (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -201,8 +184,8 @@ ALTER TABLE `chi_tiet_don_hang`
 -- Các ràng buộc cho bảng `chi_tiet_gio_hang`
 --
 ALTER TABLE `chi_tiet_gio_hang`
-  ADD CONSTRAINT `chi_tiet_gio_hang_ibfk_1` FOREIGN KEY (`magiohang`) REFERENCES `gio_hang` (`magiohang`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `chi_tiet_gio_hang_ibfk_2` FOREIGN KEY (`macauhinh`) REFERENCES `lua_chon_cau_hinh` (`macauhinh`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `chi_tiet_gio_hang_ibfk_2` FOREIGN KEY (`macauhinh`) REFERENCES `lua_chon_cau_hinh` (`macauhinh`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chi_tiet_gio_hang_ibfk_3` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `dia_chi`
@@ -215,12 +198,6 @@ ALTER TABLE `dia_chi`
 --
 ALTER TABLE `don_hang`
   ADD CONSTRAINT `don_hang_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON UPDATE CASCADE;
-
---
--- Các ràng buộc cho bảng `gio_hang`
---
-ALTER TABLE `gio_hang`
-  ADD CONSTRAINT `gio_hang_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `hinh`
