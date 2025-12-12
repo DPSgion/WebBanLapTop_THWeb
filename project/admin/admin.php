@@ -12,23 +12,23 @@
 
 <body>
     <div class="header">
-        <a class="header-left" href="index.php">
+        <a class="header-left" href="admin.php">
             <img src="../assets/images/logolaptop.png" width="120px">
             <h1 class="header-logo">Admin</h1>
             
         </a>
         <div class="header-right">
             <p class="admin-name">Admin Name</p>
-            <a href="logout.php" class="logout-btn">Đăng xuất</a>
+            <a href="#" class="logout-btn">Đăng xuất</a>
         </div>
     </div>
 
     <div class="sidebar">
         <ul>
-            <li><a href="index.php?page=quanlydanhmuc">Quản lý danh mục</a></li>
-            <li><a href="index.php?page=quanlysanpham">Quản lý sản phẩm</a></li>
+            <li><a href="admin.php?page=quanlydanhmuc">Quản lý danh mục</a></li>
+            <li><a href="admin.php?page=quanlysanpham">Quản lý sản phẩm</a></li>
             <li><a href="">Quản lý đơn hàng</a></li>
-            <li><a href="index.php?page=caidat">Cài đặt</a></li>
+            <li><a href="admin.php?page=caidat">Cài đặt</a></li>
         </ul>
     </div>
 
@@ -48,11 +48,12 @@
                 include 'quanlysanpham.php';
                 break;
             case 'quanlydonhang':
-                // include 
+                // include 'quanlydonhang.php'
                 break;
             case 'caidat':
                 include 'caidat.php';
                 break;
+                
             default:
                 include 'quanlydanhmuc.php';
                 break;
