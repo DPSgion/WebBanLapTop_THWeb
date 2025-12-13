@@ -20,7 +20,7 @@ include("includes/header.php");
 
             <div class="product-grid-5">
                 <div class="product-card">
-  
+                    <a href="pages/chitietsanpham.php">
                     <div class="p-img">
                         <img src="assets/images/acer_nitro_15.webp" alt="Laptop">
                     </div>
@@ -30,7 +30,7 @@ include("includes/header.php");
                         <div class="p-price-current">33.990.000₫</div>
 
                     </div>
-                    
+                    </a>
                 </div>
 
                 <div class="product-card">

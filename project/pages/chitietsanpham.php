@@ -66,12 +66,15 @@ include("../includes/header.php");
 
           <div class="sp-right-action">
             <div class="sp-right-action-buy">
-              <button>Mua ngay</button>
+              <a href="giohang.php">
+                <button>MUA NGAY</button>
+              </a>
             </div>
             <div class="sp-right-action-cart">
               <button>
-                <img src="../assets/images/shopping-cart.png" alt="" />
-                  
+                <a href="giohang.php">
+                  <img src="../assets/images/shopping-cart.png" alt="" />
+                </a>
               </button>
             </div>
           </div>
