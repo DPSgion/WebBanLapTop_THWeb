@@ -1013,3 +1013,113 @@ img {
         width: auto;
     }
 }
+
+/* ====================== */
+/* Form đặt hàng */
+/* ====================== */
+/* --- CSS CHO MODAL (POPUP) --- */
+/* Lớp phủ mờ toàn màn hình */
+.modal-overlay {
+    display: none; /* Mặc định ẩn */
+    position: fixed;
+    z-index: 1000; /* Nằm trên cùng */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Màu đen mờ 60% */
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s;
+}
+
+/* Hộp nội dung chính */
+.modal-content {
+    background-color: white;
+    width: 90%;
+    max-width: 500px; /* Độ rộng tối đa */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideDown 0.3s;
+}
+
+/* Nút đóng (x) ở góc */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+.close-modal:hover { color: #d70018; }
+
+.modal-header h3 {
+    color: #d70018;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.modal-header p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+/* Các ô nhập liệu */
+.form-group { margin-bottom: 15px; }
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+.form-group input:focus { border-color: #d70018; }
+
+/* Các nút bấm cuối form */
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+.btn-cancel {
+    width: 40%;
+    padding: 12px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-confirm {
+    width: 60%;
+    padding: 12px;
+    background: #d70018;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-confirm:hover { background: #b00014; }
+
+/* Hiệu ứng chuyển động */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

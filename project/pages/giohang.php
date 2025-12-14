@@ -1,4 +1,7 @@
-
+<?php
+require_once("../includes/config.php");
+include("../includes/header.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,12 +85,49 @@
                         <span>Tổng tiền:</span>
                         <span class="final-price">89.990.000₫</span>
                     </div>
-                    <button class="btn-checkout">TIẾN HÀNH ĐẶT HÀNG</button>
+                    <button class="btn-checkout" id="btn-open-modal">ĐẶT HÀNG</button>
                     <a href="../index.php" class="continue-shopping">Chọn thêm sản phẩm khác</a>
                 </div>
             </div>
             </div>
         </div>
 </div>
+
+
+<!-- form đặt hàng -->
+<div id="checkout-modal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        
+        <div class="modal-header">
+            <h3>THÔNG TIN GIAO HÀNG</h3>
+            <p>Vui lòng điền thông tin để hoàn tất đơn hàng</p>
+        </div>
+
+        <form action="xuly_dathang.php" method="POST" class="checkout-form">
+            <div class="form-group">
+                <label>Họ và tên người nhận</label>
+                <input type="text" name="hoten" required>
+            </div>
+
+            <div class="form-group">
+                <label>Số điện thoại</label>
+                <input type="tel" name="sdt"  required>
+            </div>
+
+            <div class="form-group">
+                <label>Địa chỉ giao hàng</label>
+                <input type="text" name="diachi" placeholder="Số nhà, tên đường, phường/xã..." required>
+            </div>
+
+
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel">Hủy bỏ</button>
+                <button type="submit" class="btn-confirm">XÁC NHẬN ĐẶT HÀNG</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../assets/js/main.js"></script>
 </body>
 </html>
