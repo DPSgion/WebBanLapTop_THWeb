@@ -430,10 +430,21 @@ img {
     background-color: #d63030;
     border-radius: 10%;
     border: 1px solid #b95252;
-    padding: 5px;
+    
 }
 
+/* Tác động chính xác vào thẻ a nằm trong danh sách của header-bar */
+.header-bar ul li a {
+    text-decoration: none !important; /* Dùng !important để ép buộc bỏ gạch chân */
+    color: inherit; /* Link sẽ lấy màu chữ của thẻ cha (thường là màu đen) thay vì màu xanh */
+    display: flex; /* Giúp căn chỉnh ảnh và chữ thẳng hàng nếu có icon */
+    align-items: center;
+}
 
+.header-bar ul li a:hover {
+    text-decoration: none !important;
+   
+}
 
 /* =================================== */
 /* footer */

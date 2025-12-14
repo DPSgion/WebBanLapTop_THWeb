@@ -1,5 +1,6 @@
 <?php
-include("../includes/header.php");
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <!DOCTYPE html>
@@ -85,5 +86,5 @@ include("../includes/header.php");
 </html>
 
 <?php
-include("../includes/footer.php");
+require_once __DIR__ . '/../includes/footer.php';
 ?>

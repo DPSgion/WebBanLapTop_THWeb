@@ -38,9 +38,5 @@
             </div>
         </div>
     </div>
-
-    <div class="copyright">
-        <p> ©copyright 2025 Công Ty Cổ Phần Bán Lẻ Kỹ Thuật Số 2 mình tao</p>
-    </div>
 </body>
 </html>
