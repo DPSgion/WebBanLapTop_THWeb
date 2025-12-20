@@ -13,12 +13,14 @@
         <li>
           <input type="search"
                  class="header-bar-search"
-                 placeholder="Nhập tên điện thoại, máy tính...">
+                 placeholder="Nhập tên laptop...">
         </li>
 
         <li>
-          <img src="<?php echo $path; ?>/assets/images/user.png" alt="">
-          Đăng nhập
+          <a href="<?php echo $path; ?>/pages/dangnhap.php">
+            <img src="<?php echo $path; ?>/assets/images/user.png" alt="">
+            Đăng nhập
+          </a>
         </li>
 
         <li>
