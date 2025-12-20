@@ -1,12 +1,12 @@
-<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+<link rel="stylesheet" href="<?php echo $path; ?>/assets/css/style.css">
 
 <div class="header">
   <div class="header-container">
     <section class="header-bar">
       <ul>
         <li>
-          <a href="<?= BASE_URL ?>index.php">
-            <img src="<?= BASE_URL ?>assets/images/logolaptop.png" alt="logo">
+          <a href="<?php echo $path; ?>/index.php">
+            <img src="<?php echo $path; ?>/assets/images/logolaptop.png" alt="logo">
           </a>
         </li>
 
@@ -17,13 +17,13 @@
         </li>
 
         <li>
-          <img src="<?= BASE_URL ?>assets/images/user.png" alt="">
+          <img src="<?php echo $path; ?>/assets/images/user.png" alt="">
           Đăng nhập
         </li>
 
         <li>
-            <a href="<?= BASE_URL ?>pages/giohang.php">
-                <img src="<?= BASE_URL ?>assets/images/shopping-cart.png" alt="">
+            <a href="<?php echo $path; ?>/pages/giohang.php">
+                <img src="<?php echo $path; ?>/assets/images/shopping-cart.png" alt="">
                 Giỏ hàng
             </a>
         </li>

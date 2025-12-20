@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/includes/config.php';
-require_once __DIR__ . '/includes/header.php';
+$path = "."; // File này nằm ngang hàng với thư mục assets
+include("includes/header.php");
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -281,5 +281,4 @@ require_once __DIR__ . '/includes/header.php';
 </html>
 
 <?php
-require_once __DIR__ . '/includes/footer.php';
-?>
+include("includes/footer.php");

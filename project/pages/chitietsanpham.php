@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/header.php';
+$path = ".."; // File này nằm sâu hơn 1 cấp, cần lùi ra ngoài để gặp assets
+include("../includes/header.php");
 ?>
 
 <!DOCTYPE html>
@@ -86,5 +86,5 @@ require_once __DIR__ . '/../includes/header.php';
 </html>
 
 <?php
-require_once __DIR__ . '/../includes/footer.php';
+include("../includes/footer.php");
 ?>

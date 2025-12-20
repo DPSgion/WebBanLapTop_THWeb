@@ -1,5 +1,5 @@
 <?php
-require_once("../includes/config.php");
+$path = ".."; // File này nằm sâu hơn 1 cấp, cần lùi ra ngoài để gặp assets
 include("../includes/header.php");
 ?>
 <!DOCTYPE html>
