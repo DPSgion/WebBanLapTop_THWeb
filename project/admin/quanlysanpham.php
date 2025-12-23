@@ -1,3 +1,7 @@
+<?php
+    include("../config/configDB.php");
+?>
+
 <div class="main-title">
     <h2>Quản lý Sản Phẩm</h2>
 </div>
@@ -59,28 +63,51 @@
             </tr>
         </thead>
         <tbody>
+
+            <?php
             
-            <tr>
-                <td>1</td>
-                <td>
-                    <strong>MacBook Air M1</strong><br>
-                    <small style="color:#888;">Mã: MBAM1</small>
-                </td>
-                <td class="config-cell">
-                    - CPU: Apple M1<br>
-                    - VGA: 7-core GPU<br>
-                    - Màn: 13.3" Retina<br>
-                    - RAM: 8GB<br>
-                    - SSD: 256GB<br>
-                    - Pin: 15h sử dụng
-                </td>
-                <td style="color: red; font-weight: bold;">18.990.000 đ</td>
-                <td>5</td>
-                <td>
-                    <a href="#" class="btn btn-edit">Sửa</a>
-                    <a href="#" class="btn btn-delete">Xóa</a>
-                </td>
-            </tr>
+            $sqlProduct = " SELECT 	sp.tensanpham, sp.cpu, sp.vga, sp.man_hinh, sp.pin, 
+                                    ch.ram, ch.ocung, ch.giatien, ch.soluong
+                            FROM `san_pham` sp
+                                    inner join cau_hinh ch on ch.masanpham = sp.masanpham";
+
+            $stmt = $pdo->prepare($sqlProduct);
+            $stmt->execute();
+
+            $dsSP = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $count = 1;
+            foreach ($dsSP as $sanpham){
+                ?>
+                <tr>
+                    <td><?php echo $count; ?></td>
+                    <td>
+                        <strong><?php echo $sanpham['tensanpham']; ?></strong><br>
+                    </td>
+                    <td class="config-cell">
+                        - CPU: <?php echo $sanpham['cpu'] ?><br>
+                        - VGA: <?php echo $sanpham['vga'] ?><br>
+                        - Màn: <?php echo $sanpham['man_hinh'] ?><br>
+                        - RAM: <?php echo $sanpham['ram'] ?><br>
+                        - SSD: <?php echo $sanpham['ocung'] ?><br>
+                        - Pin: <?php echo $sanpham['pin'] ?>
+                    </td>
+                    <td style="color: red; font-weight: bold;">
+                        <?php echo number_format($sanpham['giatien'], 0, ',', '.')  ?> đ
+                    </td>
+                    <td><?php echo $sanpham['soluong'] ?></td>
+                    <td>
+                        <a href="#" class="btn btn-edit">Sửa</a>
+                        <a href="#" class="btn btn-delete">Xóa</a>
+                    </td>
+                </tr>
+
+                <?php
+                $count++;
+            }
+
+            ?>
+            
+            
         </tbody>
     </table>
 </div>
@@ -92,7 +119,7 @@
         <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Thêm Sản Phẩm Mới</h3>
 
 
-        <form action="#" method="post">
+        <form action="controller/productController.php" method="post" enctype="multipart/form-data">
 
             <div class="section-title">1. Thông tin chung (Cấu hình cứng)</div>
             <div class="row-group">
@@ -103,10 +130,25 @@
                 <div class="col-6">
                     <label>Hãng sản xuất:</label>
                     <select name="brand_id" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-                        <option value="1">Dell</option>
-                        <option value="2">HP</option>
-                        <option value="3">Macbook</option>
-                        <option value="4">Asus</option>
+
+                        <?php
+
+                        $sql = "SELECT * FROM thuong_hieu";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute();
+
+                        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        
+                        foreach ($data as $thuonghieu){
+                        ?>
+
+                            <option value="<?php echo $thuonghieu['mathuonghieu']; ?>"><?php echo $thuonghieu['tenthuonghieu']; ?></option>
+
+                        <?php
+                        }
+                        ?>
+
+                        
                     </select>
                 </div>
             </div>
@@ -122,6 +164,13 @@
                         placeholder="VD: 13.4 inch FHD+"></div>
                 <div class="col-6"><label>Pin:</label><input type="text" name="battery" placeholder="VD: 4 Cell 52Wh">
                 </div>
+            </div>
+
+            <div class="row-group">
+                <div class="col-6"><label>Hình ảnh:</label>
+                <input type="file" name="images[]" multiple accept=".jpg, .jpeg, .png">
+            </div>
+                
             </div>
 
             <div class="section-title"
