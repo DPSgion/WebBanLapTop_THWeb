@@ -1,14 +1,14 @@
 
 <div class="main-title">
-    <h2>Quản lý danh mục</h2>
+    <h2>Quản lý thương hiệu</h2>
 </div>
 
 <div class="toolbar">
     <div class="search-box">
-        <input type="text" id="search-input" placeholder="Tìm kiếm danh mục ...">
+        <input type="text" id="search-input" placeholder="Tìm kiếm thương hiệu ...">
         <button class="btn-search">Tìm</button>
     </div>
-    <a  id="openModalBtn" class="btn btn-primary">Thêm danh mục mới</a>
+    <a  id="openModalBtn" class="btn btn-primary">Thêm thương hiệu mới</a>
 </div>
 
 <div class="table-container">
@@ -16,7 +16,7 @@
         <thead>
             <tr>
                 <th width="5%">STT</th>
-                <th width="45%">Tên danh mục</th>
+                <th width="45%">Tên thương hiệu</th>
                 <th width="20%">Số lượng SP</th>
                 <th width="20%">Hành động</th>
             </tr>
@@ -56,12 +56,12 @@
 
 <div id="myModal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span> <h3>Thêm Danh Mục Mới</h3>
+        <span class="close">&times;</span> <h3>Thêm Thương Hiệu Mới</h3>
         
         <form action="" method="post">
             <div class="form-group">
-                <label>Tên danh mục:</label>
-                <input type="text" name="username" placeholder="Nhập tên danh mục..." required>
+                <label>Tên thương hiệu:</label>
+                <input type="text" name="thuonghieu" placeholder="Nhập tên thương hiệu..." required>
             </div>
             
             <div class="form-actions">

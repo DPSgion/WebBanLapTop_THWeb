@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/style_admin.css">
     <title>Admin Page</title>
-    
-    <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 
 <body>
@@ -25,7 +23,7 @@
 
     <div class="sidebar">
         <ul>
-            <li><a href="admin.php?page=quanlydanhmuc">Quản lý danh mục</a></li>
+            <li><a href="admin.php?page=quanlythuonghieu">Quản lý thương hiệu</a></li>
             <li><a href="admin.php?page=quanlysanpham">Quản lý sản phẩm</a></li>
             <li><a href="">Quản lý đơn hàng</a></li>
             <li><a href="admin.php?page=caidat">Cài đặt</a></li>
@@ -37,12 +35,12 @@
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         } else {
-            $page = 'quanlydanhmuc';
+            $page = 'quanlythuonghieu';
         }
 
         switch ($page) {
             case 'quanlydanhmuc':
-                include 'quanlydanhmuc.php';
+                include 'quanlythuonghieu.php';
                 break;
             case 'quanlysanpham':
                 include 'quanlysanpham.php';
@@ -55,7 +53,7 @@
                 break;
                 
             default:
-                include 'quanlydanhmuc.php';
+                include 'quanlythuonghieu.php';
                 break;
         }
         ?>
