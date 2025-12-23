@@ -58,14 +58,14 @@
     <div class="modal-content">
         <span class="close">&times;</span> <h3>Thêm Thương Hiệu Mới</h3>
         
-        <form action="" method="post">
+        <form action="controller/brandController.php" method="post">
             <div class="form-group">
                 <label>Tên thương hiệu:</label>
-                <input type="text" name="thuonghieu" placeholder="Nhập tên thương hiệu..." required>
+                <input type="text" id="thuonghieu" name="thuonghieu" placeholder="Nhập tên thương hiệu..." required>
             </div>
             
             <div class="form-actions">
-                <input type="submit" value="Lưu lại" class="btn btn-primary">
+                <input type="submit" name="btnThem" value="Lưu lại" class="btn btn-primary">
             </div>
         </form>
     </div>
@@ -80,6 +80,10 @@
 
     btnOpen.onclick = function() {
         modal.style.display = "block";
+        thuonghieu.value = ""; 
+        setTimeout(function() {
+            thuonghieu.focus();
+        }, 100);
     }
 
     btnClose.onclick = function() {
@@ -89,6 +93,7 @@
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
+            
         }
     }
 
