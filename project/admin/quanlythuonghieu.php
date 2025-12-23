@@ -1,3 +1,7 @@
+<?php
+    include("../config/configDB.php");
+?>
+
 
 <div class="main-title">
     <h2>Quản lý thương hiệu</h2>
@@ -22,33 +26,32 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Laptop Acer</td>
-                <td>15</td>
-                <td>
-                    <a href="#" class="btn btn-edit">Sửa</a>
-                    <a href="#" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Macbook</td>
-                <td>8</td>
-                <td>
-                    <a href="#" class="btn btn-edit">Sửa</a>
-                    <a href="#" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Laptop Lenovo</td>
-                <td>24</td>
-                <td>
-                    <a href="#" class="btn btn-edit">Sửa</a>
-                    <a href="#" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
-                </td>
-            </tr>
+            <?php
+                $sql = "SELECT * FROM thuong_hieu";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $count = 1;
+                foreach($data as $dong){
+                    ?>
+
+                    <tr>
+                        <td><?php echo $count; ?></td>
+                        <td><?php echo $dong['tenthuonghieu']; ?></td>
+                        <td>?</td>
+                        <td>
+                            <a href="#" class="btn btn-edit">Sửa</a>
+                            <a href="#" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                        </td>
+                    </tr>
+
+                    <?php
+                    $count++;
+                }
+
+            ?>
         </tbody>
     </table>
 </div>
