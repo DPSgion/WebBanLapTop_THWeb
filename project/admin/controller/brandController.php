@@ -44,3 +44,41 @@ if (isset($_POST['btnThem'])){
     }
     
 }
+
+if (isset($_POST['btnCapNhat'])){
+    
+    if ($_POST['thuonghieu_cu'] != $_POST['thuonghieu']){
+
+        // Kiểm tra trùng
+        $sql = "SELECT COUNT(*) FROM `thuong_hieu` WHERE tenthuonghieu=?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$_POST['thuonghieu']]);
+        if ($stmt->fetchColumn() > 0){
+            baoAlert("Tên thương hiệu này đã tồn tại!");
+            return;
+        }
+
+        // Update
+        $sql = "UPDATE `thuong_hieu` SET tenthuonghieu=? WHERE mathuonghieu=?";
+        $stmt = $pdo->prepare($sql);
+        
+        try{
+            if ($stmt->execute([$_POST['thuonghieu'], $_POST['mathuonghieu']])){
+                header("Location: ../admin.php?page=quanlythuonghieu");
+            }
+            else{
+                baoAlert("Cập nhật thương hiệu thất bại");
+            }
+        }
+        catch (Exception $ex){
+            echo "<script>
+                    console.error('". $ex->getMessage() ."');
+                </script>";
+        }
+    }
+    else{
+        header("Location: ../admin.php?page=quanlythuonghieu");
+    }
+
+    
+}

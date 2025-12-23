@@ -46,7 +46,7 @@
                 include 'quanlysanpham.php';
                 break;
             case 'quanlydonhang':
-                // include 'quanlydonhang.php'
+                // include 'quanlydonhang.php';
                 break;
             case 'caidat':
                 include 'caidat.php';

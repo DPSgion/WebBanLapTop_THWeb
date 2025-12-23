@@ -36,13 +36,18 @@
                 $count = 1;
                 foreach($data as $dong){
                     ?>
-
                     <tr>
                         <td><?php echo $count; ?></td>
                         <td><?php echo $dong['tenthuonghieu']; ?></td>
                         <td>?</td>
                         <td>
-                            <a href="#" class="btn btn-edit">Sửa</a>
+                            <a href="#" 
+                                class="btn btn-edit btn-update" 
+                                data-id="<?php echo $dong['mathuonghieu']; ?>" 
+                                data-name="<?php echo $dong['tenthuonghieu']; ?>">
+                                Sửa
+                            </a>
+                            
                             <a href="#" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
                         </td>
                     </tr>
@@ -75,34 +80,88 @@
 </div>
 
 
+<div id="updateModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span> <h3>Sửa Thương Hiệu</h3>
+        
+        <form action="controller/brandController.php" method="post">
+            
+            <input type="hidden" id="id_edit" name="mathuonghieu">
+            <input type="hidden" id="id_tenthuonghieu_cu" name="thuonghieu_cu">
+
+            <div class="form-group">
+                <label>Tên thương hiệu:</label>
+                <input type="text" id="thuonghieu_edit" name="thuonghieu" required>
+            </div>
+            
+            <div class="form-group">
+                 <br>
+                 <input type="submit" name="btnCapNhat" value="Cập nhật" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
 <script>
+    // Modal Thêm
     var modal = document.getElementById("myModal");
     var btnOpen = document.getElementById("openModalBtn");
-    var btnClose = document.getElementsByClassName("close")[0];
+    var inputThem = document.getElementById("thuonghieu"); 
+
+    // Modal Sửa
+    var modalUpdate = document.getElementById("updateModal");
+    var inputSua = document.getElementById("thuonghieu_edit");
+    var inputId = document.getElementById("id_edit");
+
+    var spans = document.getElementsByClassName("close");
 
     btnOpen.onclick = function() {
         modal.style.display = "block";
-        thuonghieu.value = ""; 
-        setTimeout(function() {
-            thuonghieu.focus();
-        }, 100);
+        inputThem.value = ""; 
+        setTimeout(function() { inputThem.focus(); }, 100);
     }
 
-    btnClose.onclick = function() {
+    var editButtons = document.querySelectorAll(".btn-update");
+
+    // 2. Gán sự kiện click cho từng nút
+    editButtons.forEach(function(btn) {
+        btn.onclick = function(event) {
+
+            var id = this.getAttribute("data-id");
+            var name = this.getAttribute("data-name");
+            var oldName = this.getAttribute("data-name");
+
+            // Điền dữ liệu vào form Sửa
+            inputId.value = id;
+            inputSua.value = name;
+            id_tenthuonghieu_cu.value = oldName;
+
+            // Hiện Modal Sửa
+            modalUpdate.style.display = "block";
+            
+            setTimeout(function() { 
+                inputSua.focus(); 
+            }, 100);
+        };
+    });
+
+    // Nút X của Modal Thêm
+    spans[0].onclick = function() {
         modal.style.display = "none";
+    }
+    // Nút X của Modal Sửa
+    spans[1].onclick = function() {
+        modalUpdate.style.display = "none";
     }
 
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
-            
+        }
+        if (event.target == modalUpdate) {
+            modalUpdate.style.display = "none";
         }
     }
-
-    document.addEventListener('keydown', function(event) {
-        if (event.key === "Escape") {
-            modal.style.display = "none";
-        }
-    });
 </script>
