@@ -99,5 +99,28 @@ if (isset($_GET['doitrangthai'])){
                 console.error('". $ex->getMessage() ."');
             </script>";
     }
+}
 
+// Xóa thương hiệu
+if (isset($_GET['xoathuonghieu'])){
+    $mathuonghieu = $_GET['id'];
+    $sql = "SELECT COUNT(*)
+            FROM `san_pham` 
+            WHERE mathuonghieu=?";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$mathuonghieu]);
+
+    $count = $stmt->fetchColumn();
+    if ($count > 0){
+        baoAlert("Không thể xóa! Thương hiệu này đang có $count sản phẩm.");
+    }
+    else{
+        // Nếu bằng 0 thì mới tiến hành xóa
+        $sqlDelete = "DELETE FROM thuong_hieu WHERE mathuonghieu=?";
+        $stmtDelete = $pdo->prepare($sqlDelete);
+        $stmtDelete->execute([$mathuonghieu]);
+        
+        header("Location: ../admin.php?page=quanlythuonghieu");
+    }
 }

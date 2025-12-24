@@ -66,6 +66,12 @@
                                 onclick="return confirm('Bạn có chắc muốn đổi trạng thái ?')">
                                 Đổi trạng thái
                             </a>
+                            
+                            <a href="controller/brandController.php?xoathuonghieu&id=<?php echo $dong['mathuonghieu']; ?>"
+                                class="btn btn-delete"
+                                onclick="return confirm('Bạn có chắc muốn xóa không ?')">
+                                Xóa
+                            </a>
                         </td>
                     </tr>
 
