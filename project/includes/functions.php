@@ -40,22 +40,9 @@ function getSanphamMoi($pdo) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// 4. Hàm lấy Sản phẩm Gaming
-function getSanphamGaming($pdo) {
-    $sql = "SELECT sp.*, h.urlhinh, MIN(lc.giatien) as gia_thap_nhat   
-            FROM san_pham sp 
-            LEFT JOIN hinh h ON sp.masanpham = h.masanpham 
-            JOIN cau_hinh lc ON sp.masanpham = lc.masanpham 
-            WHERE sp.tensanpham LIKE '%Gaming%' OR sp.vga LIKE '%RTX%'
-            GROUP BY sp.masanpham 
-            LIMIT 5";
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
 
-// 9. Hàm tìm kiếm và lọc sản phẩm nâng cao (Đã cập nhật)
+//  Hàm tìm kiếm và lọc sản phẩm nâng cao (Đã cập nhật)
 function timKiemSanPham($pdo, $tuKhoa = null, $hang = null, $mucGia = null, $ram = null, $ocung = null, $vga = null) {
     // Join bảng cau_hinh để lọc RAM, Giá, Ổ cứng
     // Join bảng hinh để lấy ảnh
@@ -124,5 +111,20 @@ function timKiemSanPham($pdo, $tuKhoa = null, $hang = null, $mucGia = null, $ram
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// 10. Hàm hỗ trợ tạo Link Xóa bộ lọc 
+// Hàm này sẽ lấy URL hiện tại, xóa bỏ tham số $keyToRemove và trả về URL mới
+function createLinkWithout($keyToRemove) {
+    $params = $_GET; // Lấy tất cả tham số trên URL hiện tại
+    
+    // Nếu tham số đó tồn tại thì xóa nó đi
+    if (isset($params[$keyToRemove])) {
+        unset($params[$keyToRemove]); 
+    }
+    
+    // Nếu còn tham số khác thì nối lại thành chuỗi (VD: ?hang=Acer&gia=15-20)
+    // Nếu không còn tham số nào thì trả về trang gốc timkiem.php
+    return count($params) > 0 ? 'timkiem.php?' . http_build_query($params) : 'timkiem.php';
 }
 ?>

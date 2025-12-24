@@ -8,32 +8,40 @@ include("../includes/header.php");
 
 // 2. Nhận dữ liệu từ URL 
 // Sử dụng toán tử ?? null để tránh lỗi nếu không có tham số
-$tuKhoa = $_GET['tukhoa'] ?? null;
+$tuKhoa = $_GET['tuKhoa'] ?? null;
 $hang = $_GET['hang'] ?? null;
 $gia = $_GET['gia'] ?? null;
 $ram = $_GET['ram'] ?? null;
 $ocung = $_GET['ocung'] ?? null;
 $vga = $_GET['vga'] ?? null;
 
-
 // Gọi hàm tìm kiếm lấy danh sách sản phẩm
 $dsKetQua = timKiemSanPham($pdo, $tuKhoa, $hang, $gia, $ram, $ocung, $vga);
 
 // Xử lý tiêu đề hiển thị 
-$tieuDe = "Kết quả tìm kiếm"; // Mặc định
+$tieuDe = "Toàn bộ sản phẩm"; // Mặc định
 
+// Hiển thị tiêu đề
 if ($tuKhoa)
     $tieuDe = "Tìm kiếm: " . htmlspecialchars($tuKhoa);
 if ($hang)
     $tieuDe = "Laptop hãng " . htmlspecialchars($hang);
-if ($gia)
-    $tieuDe = "Mức giá: " . str_replace('-', ' đến ', $gia) . " triệu";
+if ($gia) {
+    if ($gia == 'duoi-15') {
+        $tieuDe = "Mức giá: Dưới 15 triệu";
+    } elseif ($gia == 'tren-20') {
+        $tieuDe = "Mức giá: Trên 20 triệu";
+    } else {
+        // Trường hợp 15-20
+        $tieuDe = "Mức giá: " . str_replace('-', ' - ', $gia) . " triệu";
+    }
+}
 if ($ram)
     $tieuDe = "Laptop RAM " . htmlspecialchars($ram);
 if ($ocung)
     $tieuDe = "Laptop ổ cứng " . htmlspecialchars($ocung);
 if ($vga)
-    $tieuDe = "Laptop Card đồ họa " . htmlspecialchars(strtoupper($vga));
+    $tieuDe = "Laptop có Card đồ họa " . htmlspecialchars(strtoupper($vga));
 ?>
 
 <!DOCTYPE html>
@@ -118,7 +126,12 @@ if ($vga)
             <!-- Hiển thị Sản phẩm -->
 
             <div class="breadcrumb">
-                <a href="../index.php">Trang chủ >></a> <b><?php echo $tieuDe; ?></b>
+                <div class="breadcrumb-trai"> 
+                    Đang lọc theo>  <b><?php echo $tieuDe; ?></b>
+                </div>
+                <div class="breadcrumb-phai">
+                    <a href="timkiem.php">Hiển thị tất cả>></a>
+                </div>
             </div>
 
             <div class="cat-view-all">(Tìm thấy <?php echo count($dsKetQua); ?> sản phẩm)</div>

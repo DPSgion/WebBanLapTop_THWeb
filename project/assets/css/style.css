@@ -1272,15 +1272,26 @@ img {
 /* Tìm kiếm */
 /* ================= */
 .breadcrumb{
-    margin: 20px 0;
+    margin: 20px 0 10px 10px; 
+    display: flex;
+    justify-content: space-between;
+}
+.breadcrumb-trai{
+    color: black;
+}
+.breadcrumb-trai b{
     color: red;
 }
-.breadcrumb a{
-    color: black;
+.breadcrumb-phai a{
+    color: red;
     text-decoration: none;
+    padding: 10px;
+    font-weight: bold;
+    
+    
 }
 .cat-view-all{
-    padding: 5px;
+    padding: 5px 10px;
 }
 
 .not-found-box{

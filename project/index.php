@@ -10,7 +10,7 @@ $dsGaming = getSanphamGaming($pdo);
 
 
 // 1. Lấy TẤT CẢ tham số từ URL
-$tuKhoa = $_GET['tukhoa'] ?? null;
+$tuKhoa = $_GET['tuKhoa'] ?? null;
 $hang = $_GET['hang'] ?? null;
 $gia = $_GET['gia'] ?? null;
 $ram = $_GET['ram'] ?? null;
