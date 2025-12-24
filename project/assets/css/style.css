@@ -621,9 +621,10 @@ img {
     border-radius: 6px;
     padding: 10px;
     cursor: pointer;
-    text-align: left;       /* Canh lề trái cho nội dung nút */
+    text-align: center;       /* Canh lề trái cho nội dung nút */
     font-size: 13px;
     transition: 0.2s;
+
 }
 
 .sp-right-cauhinh-btn small {
