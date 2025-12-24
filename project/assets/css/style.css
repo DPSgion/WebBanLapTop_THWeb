@@ -1267,3 +1267,29 @@ img {
     text-decoration: none;
 }
 .register-link a:hover { text-decoration: underline; }
+
+/* ================== */
+/* Tìm kiếm */
+/* ================= */
+.breadcrumb{
+    margin: 20px 0;
+    color: red;
+}
+.breadcrumb a{
+    color: black;
+    text-decoration: none;
+}
+.cat-view-all{
+    padding: 5px;
+}
+
+.not-found-box{
+    text-align: center;
+    padding: 50px;
+}
+
+.not-found-box a{
+    text-decoration: underline;
+    color: #d70018; 
+    font-weight: bold;
+}

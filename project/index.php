@@ -17,6 +17,7 @@ $ram = $_GET['ram'] ?? null;
 $ocung = $_GET['ocung'] ?? null; // Mới
 $vga = $_GET['vga'] ?? null;   // Mới
 
+
 // 2. Gọi hàm tìm kiếm với đầy đủ tham số
 $dsKetQua = timKiemSanPham($pdo, $tuKhoa, $hang, $gia, $ram, $ocung, $vga);
 
@@ -34,7 +35,7 @@ if ($vga)
     $tieuDe = "Laptop Card đồ họa " . strtoupper($vga);
 ?>
 
-?>
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -118,16 +119,11 @@ if ($vga)
                 <div class="filter-dropdown">
                     <div class="filter-btn">Card đồ hoạ <span class="arrow-down">▼</span></div>
                     <div class="dropdown-content">
-                        <a href="pages/timkiem.php?vga=nvdia">NVIDIA (RTX/GTX)</a>
+                        <a href="pages/timkiem.php?vga=nvdia">NVIDIA</a>
                         <a href="pages/timkiem.php?vga=amd">AMD</a>
                     </div>
                 </div>
 
-            </div>
-
-            <div class="quick-filter-list">
-                <a href="pages/timkiem.php?tukhoa=Gaming" class="quick-tag">Laptop Gaming</a>
-                <a href="pages/timkiem.php?tukhoa=VanPhong" class="quick-tag">Laptop Văn phòng</a>
             </div>
 
         </section>
@@ -137,11 +133,11 @@ if ($vga)
             <h3>Thương hiệu nổi bật</h3>
             <div class="brand-list">
                 <div class="brand-item">
-                    <a href="pages/timkiem.php?hang=MacBook"><img src="assets/images/logo_macbook.webp" alt="logo"></div></a>
+                    <a href="pages/timkiem.php?hang=MacBook"><img src="assets/images/logo_macbook.webp" alt="logo"></a></div>
                 <div class="brand-item">
-                    <a href="pages/timkiem.php?hang=Acer"></a><img src="assets/images/logo_acer.png" alt="logo"></div>
+                    <a href="pages/timkiem.php?hang=Acer"><img src="assets/images/logo_acer.png" alt="logo"></a></div>
                 <div class="brand-item">
-                    <a href="pages/timkiem.php?hang=Lenovo"></a><img src="assets/images/logo_lenovo.png" alt="logo"></div>
+                    <a href="pages/timkiem.php?hang=Lenovo"><img src="assets/images/logo_lenovo.png" alt="logo"></a></div>
             </div>
         </section>
 
