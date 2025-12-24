@@ -68,11 +68,11 @@
         </thead>
         <tbody>
             <?php
-            $sqlProduct = "SELECT sp.masanpham, sp.tensanpham, sp.cpu, sp.vga, sp.man_hinh, sp.pin, 
-                                ch.ram, ch.ocung, ch.giatien, ch.soluong
-                        FROM `san_pham` sp
-                        INNER JOIN cau_hinh ch ON ch.masanpham = sp.masanpham
-                        WHERE 1=1"; // Mẹo: thêm WHERE 1=1 để dễ dàng nối chuỗi AND phía sau
+            $sqlProduct = " SELECT sp.masanpham, sp.tensanpham, sp.cpu, sp.vga, sp.man_hinh, sp.pin, 
+                                ch.macauhinh, ch.ram, ch.ocung, ch.giatien, ch.soluong
+                            FROM `san_pham` sp
+                            INNER JOIN cau_hinh ch ON ch.masanpham = sp.masanpham
+                            WHERE 1=1"; // Mẹo: thêm WHERE 1=1 để dễ dàng nối chuỗi AND phía sau
 
             // Tìm kiếm
             $keyword = '';
@@ -105,7 +105,6 @@
                     break;
             }
 
-            // --- 5. Chuẩn bị và Gán giá trị ---
             $stmt = $pdo->prepare($sqlProduct);
 
             if (!empty($keyword)) {
@@ -115,11 +114,9 @@
                 $stmt->bindValue(':brand', $brandID);
             }
 
-            // --- 6. Thực thi ---
             $stmt->execute();
             $dsSP = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // --- 7. Hiển thị dữ liệu (Giữ nguyên code hiển thị của bạn) ---
             $count = 1;
             if (count($dsSP) > 0) {
                 foreach ($dsSP as $sanpham) {
@@ -138,7 +135,10 @@
                         <td><?php echo $sanpham['soluong'] ?></td>
                         <td>
                             <a href="javascript:void(0);" class="btn btn-edit btn-edit-product" data-id="<?php echo $sanpham['masanpham']; ?>">Sửa</a>
-                            <a href="#" class="btn btn-delete">Xóa</a>
+                            <a  href="controller/productController.php?xoaSanPham&masanpham=<?php echo $sanpham['masanpham']; ?>&macauhinh=<?php echo $sanpham['macauhinh']; ?>" 
+                                class="btn btn-delete">
+                                Xóa
+                            </a>
                         </td>
                     </tr>
             <?php
@@ -373,6 +373,24 @@
     var containerAdd = document.getElementById('variant-container');
 
     btnOpenAdd.onclick = function() {
+        var form = modalAdd.querySelector("form"); 
+        if(form) form.reset(); 
+
+        // BƯỚC 2: Reset phần danh sách biến thể về chỉ còn 1 cái mặc định
+        containerAdd.innerHTML = `
+            <div class="variant-item">
+                <div class="variant-header">
+                    <span>Cấu hình 1</span>
+                    </div>
+                <div class="row-group">
+                    <div class="col-3"><label>RAM:</label><input type="text" name="ram[]" required></div>
+                    <div class="col-3"><label>Ổ cứng:</label><input type="text" name="ssd[]" required></div>
+                    <div class="col-3"><label>Giá:</label><input type="number" name="price[]" required></div>
+                    <div class="col-3"><label>Kho:</label><input type="number" name="quantity[]" required></div>
+                </div>
+            </div>
+        `;
+
         modalAdd.style.display = "block";
     }
     closeAdd.onclick = function() {
@@ -392,7 +410,7 @@
                 </div>
                 <div class="row-group">
                     <div class="col-3"><label>RAM:</label><input type="text" name="ram[]" required></div>
-                    <div class="col-3"><label>SSD:</label><input type="text" name="ssd[]" required></div>
+                    <div class="col-3"><label>Ổ cứng:</label><input type="text" name="ssd[]" required></div>
                     <div class="col-3"><label>Giá:</label><input type="number" name="price[]" required></div>
                     <div class="col-3"><label>Kho:</label><input type="number" name="quantity[]" required></div>
                 </div>`;
@@ -533,7 +551,7 @@
 
                 <div class="row-group">
                     <div class="col-3"><input type="text" name="ram[]" value="${ram}" placeholder="RAM" required></div>
-                    <div class="col-3"><input type="text" name="ssd[]" value="${ssd}" placeholder="SSD" required></div>
+                    <div class="col-3"><input type="text" name="ssd[]" value="${ssd}" placeholder="Ổ cứng" required></div>
                     <div class="col-3"><input type="number" name="price[]" value="${price}" placeholder="Giá" required></div>
                     <div class="col-3"><input type="number" name="quantity[]" value="${qty}" placeholder="Kho" required></div>
                 </div>

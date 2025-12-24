@@ -2,6 +2,13 @@
 
 include("../../config/configDB.php");
 
+function baoAlert($message){
+    echo    "<script>
+                window.location.href = '../admin.php?page=quanlysanpham';
+                alert('". $message ."');
+            </script>";
+}
+
 if (isset($_POST['btn_add_product'])){
     $tenSanPham = $_POST['name'];
     $maThuongHieu = $_POST['brand_id'];
@@ -213,10 +220,68 @@ if (isset($_POST['btn_update_product'])) {
         }
 
         $pdo->commit();
-        echo "<script>alert('Cập nhật thành công!'); window.location.href='../admin.php?page=quanlysanpham';</script>";
-
+        baoAlert("Cập nhật thành công !");
+        
     } catch (Exception $e) {
         $pdo->rollBack();
         echo "Lỗi Cập Nhật: " . $e->getMessage();
+    }
+}
+
+// Xóa
+if (isset($_GET['xoaSanPham'])){
+    $maSanPham = $_GET['masanpham'];
+    $maCauHinh = $_GET['macauhinh'];
+    
+    $sqlSoLuongCauHinh = "SELECT COUNT(*)
+            FROM cau_hinh
+                INNER JOIN san_pham on san_pham.masanpham = cau_hinh.masanpham
+            WHERE san_pham.masanpham = ?";
+
+    $stmtSoLuongCauHinh = $pdo->prepare($sqlSoLuongCauHinh);
+    $stmtSoLuongCauHinh->execute([$maSanPham]);
+
+    $count = $stmtSoLuongCauHinh->fetchColumn();
+
+    try{
+        // Chỉ xóa biến thể đó
+        if ($count > 1){
+            $sqlXoaBienThe = "DELETE FROM cau_hinh WHERE macauhinh=?";
+            $stmtXoaBienThe = $pdo->prepare($sqlXoaBienThe);
+            $stmtXoaBienThe->execute([$maCauHinh]);
+            baoAlert("Xóa thành công");
+        }
+        // Chỉ còn 1 biến thể, xóa là sẽ mất sản phẩm, xóa cả hình
+        else if ($count == 1){
+            $sqlLayHinh = "SELECT urlhinh FROM hinh WHERE masanpham = ?";
+            $stmtLayHinh = $pdo->prepare($sqlLayHinh);
+            $stmtLayHinh->execute([$maSanPham]);
+            $dsHinh = $stmtLayHinh->fetchAll(PDO::FETCH_ASSOC);
+
+            // BƯỚC 2: Xóa file hình trong thư mục ổ cứng
+            // LƯU Ý: Bạn cần kiểm tra đúng đường dẫn thư mục chứa ảnh của bạn
+            // Ví dụ: uploads/, img/, hay assets/uploads/...
+            $folderPath = "../../upload/"; 
+
+            foreach ($dsHinh as $hinh) {
+                $fileToDelete = $folderPath . $hinh['urlhinh'];
+                
+                // Kiểm tra file có tồn tại không rồi mới xóa
+                if (file_exists($fileToDelete)) {
+                    unlink($fileToDelete); // Xóa file
+                }
+            }
+
+            $sqlXoaSP = "DELETE FROM san_pham WHERE masanpham = ?";
+            $stmtXoaSP = $pdo->prepare($sqlXoaSP);
+            $stmtXoaSP->execute([$maSanPham]);
+
+            baoAlert("Đã xóa hoàn toàn sản phẩm và hình ảnh");
+        }
+    }
+    catch (Exception $ex){
+        echo "<script>
+                console.error('". $ex->getMessage() ."');
+            </script>";
     }
 }
