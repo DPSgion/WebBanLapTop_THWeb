@@ -1,133 +1,183 @@
 <?php
-$path = ".."; // File này nằm sâu hơn 1 cấp, cần lùi ra ngoài để gặp assets
+// 1. Khởi tạo session & Include
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+include("../includes/config.php");
+include("../includes/functions.php");
+$path = "..";
 include("../includes/header.php");
+
+// 2. Khởi tạo giỏ hàng nếu chưa có
+if (!isset($_SESSION['cart'])) { $_SESSION['cart'] = []; }
+
+// 3. LOGIC: THÊM VÀO GIỎ HÀNG (Khi nhận form từ trang chi tiết)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['btn_buy']) || isset($_POST['btn_add']))) {
+    
+    $p_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+    $p_config = isset($_POST['macauhinh']) ? trim($_POST['macauhinh']) : '';
+    $qty = 1;
+
+    if ($p_id > 0 && !empty($p_config)) {
+        // Gọi hàm từ functions.php
+        $item = getThongTinGioHang($pdo, $p_id, $p_config);
+
+        if ($item) {
+            $key = $p_id . '_' . $p_config; // Key duy nhất: ID_MãCấuHình
+
+            if (isset($_SESSION['cart'][$key])) {
+                $_SESSION['cart'][$key]['qty'] += $qty; // Đã có -> Tăng số lượng
+            } else {
+                // Chưa có -> Thêm mới
+                $_SESSION['cart'][$key] = [
+                    'id'          => $p_id,
+                    'macauhinh'   => $p_config,
+                    'name'        => $item['tensanpham'],
+                    'image'       => $item['urlhinh'],
+                    'price'       => $item['giatien'],
+                    'config_desc' => $item['ram'] . ' - ' . $item['ocung'],
+                    'qty'         => $qty
+                ];
+            }
+
+            // --- [THÊM ĐOẠN NÀY ĐỂ SỬA LỖI F5 TỰ TĂNG] ---
+            // Chuyển hướng về chính trang hiện tại để xóa dữ liệu POST
+            header("Location: giohang.php");
+            exit();
+        }
+    }
+}
+
+// 4. Tính tổng tiền
+$total_money = 0;
+$total_count = 0;
+foreach ($_SESSION['cart'] as $item) {
+    $total_money += $item['price'] * $item['qty'];
+    $total_count += $item['qty'];
+}
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Giỏ hàng</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="cart-page-container">
         <div class="container">
-        <div class="cart-header-title">
-            <a href="../index.php" class="back-home"> << Về trang chủ</a>
-            <h3>Giỏ hàng <span class="cart-count">(2 sản phẩm)</span></h3>
-        </div>
+            <div class="cart-header-title">
+                <a href="../index.php" class="back-home"> << Về trang chủ</a>
+                <h3>Giỏ hàng <span class="cart-count">(<?php echo $total_count; ?> sản phẩm)</span></h3>
+            </div>
 
-        <div class="cart-layout">
-            <div class="cart-left">
-                <div class="cart-table-header">
-                    <div class="ct-checkbox"><input type="checkbox"> Tất cả</div>
-                    <div class="ct-info">Sản phẩm</div>
-                    <div class="ct-qty">Số lượng</div>
-                    <div class="ct-price">Thành tiền</div>
-                    <div class="ct-action">Xóa</div>
-                </div>
+            <?php if (!empty($_SESSION['cart'])): ?>
+            <div class="cart-layout">
+                <div class="cart-left">
+                    <div class="cart-table-header">
+                        <div class="ct-checkbox"><input type="checkbox" id="check-all"> Tất cả</div>
+                        <div class="ct-info">Sản phẩm</div>
+                        <div class="ct-qty">Số lượng</div>
+                        <div class="ct-price">Thành tiền</div>
+                        <div class="ct-action">Xóa</div>
+                    </div>
 
-                <div class="cart-item">
-                    <div class="ci-checkbox">
-                        <input type="checkbox" checked>
-                    </div>
-                    <div class="ci-img">
-                        <img src="../assets/images/macbook_E2_pro.webp" alt="Laptop">
-                    </div>
-                    <div class="ci-info">
-                        <a href="#" class="ci-name">Laptop MacBook Pro 14 M3 (2024)</a>
-                        <p class="ci-variant">Cấu hình: 8GB - 256GB SSD</p>
-                        <p class="ci-price-one">Đơn giá: 39.990.000₫</p>
-                    </div>
-                    <div class="ci-qty">
-                        <div class="qty-control">
-                            <button>-</button>
-                            <input type="number" value="1" min="1">
-                            <button>+</button>
+                    <?php foreach ($_SESSION['cart'] as $key => $sp): ?>
+                    <div class="cart-item" id="item-<?php echo $key; ?>">
+                        <div class="ci-checkbox">
+                            <input type="checkbox" class="item-checkbox" checked 
+                                   data-key="<?php echo $key; ?>" 
+                                   data-price="<?php echo $sp['price']; ?>">
+                        </div>
+                        <div class="ci-img">
+                            <img src="../assets/images/<?php echo $sp['image']; ?>" alt="Laptop">
+                        </div>
+                        <div class="ci-info">
+                            <a href="chitietsanpham.php?id=<?php echo $sp['id']; ?>" class="ci-name">
+                                <?php echo $sp['name']; ?>
+                            </a>
+                            <p class="ci-variant">Cấu hình: <?php echo $sp['config_desc']; ?></p>
+                            <p class="ci-price-one">Đơn giá: <?php echo formatCurrency($sp['price']); ?></p>
+                        </div>
+
+                        <div class="ci-qty">
+                            <!-- Số lượng SP -->
+                            <div class="qty-control">
+                                <button class="btn-decrease" data-key="<?php echo $key; ?>">-</button>
+
+                                <input type="number" class="qty-input" value="<?php echo $sp['qty']; ?>" 
+                                       min="1" readonly data-key="<?php echo $key; ?>"
+                                       autocomplete="off">
+
+                                <button class="btn-increase" data-key="<?php echo $key; ?>">+</button>
+                            </div>
+                        </div>
+                        <div class="ci-total-price item-total">
+                            <?php echo formatCurrency($sp['price'] * $sp['qty']); ?>
+                        </div>
+                        <div class="ci-action">
+                            <a href="xuly_giohang.php?action=delete&key=<?php echo $key; ?>" 
+                               class="btn-delete" 
+                               onclick="return confirm('Bạn muốn xóa sản phẩm này?');">
+                                <img src="../assets/images/icons-recycle-bin.png" alt="Xóa">
+                            </a>
                         </div>
                     </div>
-                    <div class="ci-total-price">39.990.000₫</div>
-                    <div class="ci-action">
-                        <button class="btn-delete"><img src="../assets/images/icons-recycle-bin.png" alt=""></button>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
-                <div class="cart-item">
-                    <div class="ci-checkbox">
-                        <input type="checkbox">
-                    </div>
-                    <div class="ci-img">
-                        <img src="../assets/images/lenovo.jpg" alt="Laptop">
-                    </div>
-                    <div class="ci-info">
-                        <a href="#" class="ci-name">Laptop Lenovo Legion 5</a>
-                        <p class="ci-variant">Cấu hình: 16GB - 512GB SSD</p>
-                        <p class="ci-price-one">Đơn giá: 25.000.000₫</p>
-                    </div>
-                    <div class="ci-qty">
-                        <div class="qty-control">
-                            <button>-</button>
-                            <input type="number" value="2" min="1">
-                            <button>+</button>
+                <div class="cart-right">
+                    <div class="cart-summary-box">
+                        <div class="cs-row total">
+                            <span>Tổng tiền:</span>
+                            <span class="final-price"><?php echo formatCurrency($total_money); ?></span>
                         </div>
-                    </div>
-                    <div class="ci-total-price">50.000.000₫</div>
-                    <div class="ci-action">
-                         <button class="btn-delete"><img src="../assets/images/icons-recycle-bin.png" alt=""></button>
+                        <button class="btn-checkout" id="btn-open-modal">TIẾN HÀNH ĐẶT HÀNG</button>
+                        <a href="../index.php" class="continue-shopping">Chọn thêm sản phẩm khác</a>
                     </div>
                 </div>
             </div>
-
-            <div class="cart-right">
-                <div class="cart-summary-box">
-                    <div class="cs-row total">
-                        <span>Tổng tiền:</span>
-                        <span class="final-price">89.990.000₫</span>
-                    </div>
-                    <button class="btn-checkout" id="btn-open-modal">ĐẶT HÀNG</button>
-                    <a href="../index.php" class="continue-shopping">Chọn thêm sản phẩm khác</a>
+            <?php else: ?>
+                <div style="text-align: center; padding: 50px; background: white;">
+                     <p>Giỏ hàng của bạn đang trống!</p>
+                     <a href="../index.php" style="color: #d70018; font-weight: bold;">Mua sắm ngay</a>
                 </div>
-            </div>
-            </div>
+            <?php endif; ?>
         </div>
-</div>
-
-
-<!-- form đặt hàng -->
-<div id="checkout-modal" class="modal-overlay">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        
-        <div class="modal-header">
-            <h3>THÔNG TIN GIAO HÀNG</h3>
-            <p>Vui lòng điền thông tin để hoàn tất đơn hàng</p>
-        </div>
-
-        <form action="xuly_dathang.php" method="POST" class="checkout-form">
-            <div class="form-group">
-                <label>Họ và tên người nhận</label>
-                <input type="text" name="hoten" required>
-            </div>
-
-            <div class="form-group">
-                <label>Số điện thoại</label>
-                <input type="tel" name="sdt"  required>
-            </div>
-
-            <div class="form-group">
-                <label>Địa chỉ giao hàng</label>
-                <input type="text" name="diachi" placeholder="Số nhà, tên đường, phường/xã..." required>
-            </div>
-
-
-            <div class="modal-actions">
-                <button type="button" class="btn-cancel">Hủy bỏ</button>
-                <button type="submit" class="btn-confirm">XÁC NHẬN ĐẶT HÀNG</button>
-            </div>
-        </form>
     </div>
-</div>
-<script src="../assets/js/main.js"></script>
+
+    <div id="checkout-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h3>THÔNG TIN GIAO HÀNG</h3>
+                <p>Vui lòng điền thông tin để hoàn tất đơn hàng</p>
+            </div>
+            <form action="xuly_dathang.php" method="POST" class="checkout-form">
+                <?php 
+                    $u_name = isset($_SESSION['current_user']) ? $_SESSION['current_user']['hoten'] : '';
+                    $u_phone = isset($_SESSION['current_user']) ? $_SESSION['current_user']['sdt'] : '';
+                ?>
+                <div class="form-group">
+                    <label>Họ và tên người nhận</label>
+                    <input type="text" name="hoten" value="<?php echo $u_name; ?>" required>
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input type="tel" name="sdt" value="<?php echo $u_phone; ?>" required>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ giao hàng</label>
+                    <input type="text" name="diachi" placeholder="Số nhà, tên đường, phường/xã..." required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel">Hủy bỏ</button>
+                    <button type="submit" class="btn-confirm">XÁC NHẬN ĐẶT HÀNG</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

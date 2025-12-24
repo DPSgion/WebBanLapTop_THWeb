@@ -1,7 +1,7 @@
 <?php
 
 try{
-    $pdo = new PDO("mysql:hoost=localhost; dbname=banlaptop", "root", ""); 
+    $pdo = new PDO("mysql:hoost=localhost; dbname=banlaptop; port=3307", "root", ""); 
 }
 catch (PDOException $ex){
     echo "<script>
