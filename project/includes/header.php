@@ -18,25 +18,26 @@ if (session_status() === PHP_SESSION_NONE) {
         </li>
 
         <li>
-          <input type="search" class="header-bar-search" placeholder="Nhập tên laptop...">
-        </li>
+          <form action="<?php echo $path; ?>/pages/timkiem.php" method="GET">
+            <input type="search" name="tuKhoa" class="header-bar-search" placeholder="Nhập tên laptop..." required>
+          </form>
+          </li>
 
         <li>
           <?php if (isset($_SESSION['current_user'])): ?>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            
               <img src="<?php echo $path; ?>/assets/images/user.png" alt="">
 
-              <div style="display: flex; flex-direction: column;">
-                <span style="font-weight: bold; font-size: 13px; color: white;">
+              <div >
+                
                   <?php echo $_SESSION['current_user']['hoten']; ?>
-                </span>
-
+               
+                <a href="<?php echo $path; ?>/pages/dangxuat.php" style="font-size: 11px; color: #eee;">Đăng xuất</a>
               </div>
             </div>
 
           <?php else: ?>
-            <a href="<?php echo $path; ?>/pages/dangnhap.php"
-              style="color: white; text-decoration: none; display: flex; align-items: center; gap: 5px;">
+            <a href="<?php echo $path; ?>/pages/dangnhap.php">
               <img src="<?php echo $path; ?>/assets/images/user.png" alt="">
                  Đăng nhập
             </a>
