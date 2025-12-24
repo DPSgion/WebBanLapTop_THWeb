@@ -1,7 +1,41 @@
 <?php
+include("includes/config.php");
+include("includes/functions.php");
 $path = "."; // File này nằm ngang hàng với thư mục assets
 include("includes/header.php");
+
+$dsNoiBat = getSanphamNoiBat($pdo);
+$dsMoi = getSanphamMoi($pdo);
+
+
+
+// 1. Lấy TẤT CẢ tham số từ URL
+$tuKhoa = $_GET['tuKhoa'] ?? null;
+$hang = $_GET['hang'] ?? null;
+$gia = $_GET['gia'] ?? null;
+$ram = $_GET['ram'] ?? null;
+$ocung = $_GET['ocung'] ?? null; // Mới
+$vga = $_GET['vga'] ?? null;   // Mới
+
+
+// 2. Gọi hàm tìm kiếm với đầy đủ tham số
+$dsKetQua = timKiemSanPham($pdo, $tuKhoa, $hang, $gia, $ram, $ocung, $vga);
+
+// 3. Tạo tiêu đề trang động
+$tieuDe = "Kết quả tìm kiếm";
+if ($hang)
+    $tieuDe = "Laptop hãng " . $hang;
+if ($gia)
+    $tieuDe = "Laptop theo mức giá";
+if ($ram)
+    $tieuDe = "Laptop RAM " . $ram;
+if ($ocung)
+    $tieuDe = "Laptop ổ cứng " . $ocung;
+if ($vga)
+    $tieuDe = "Laptop Card đồ họa " . strtoupper($vga);
 ?>
+
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -20,261 +54,127 @@ include("includes/header.php");
             <h2 class="section-title-hot"> SẢN PHẨM NỔI BẬT </h2>
 
             <div class="product-grid-5">
-                <div class="product-card">
-                    <a href="pages/chitietsanpham.php">
-                    <div class="p-img">
-                        <img src="assets/images/acer_nitro_15.webp" alt="Laptop">
-                    </div>
-                    <div class="p-specs">CORE i7-1240H | RTX 3050</div>
-                    <div class="p-name">Laptop Acer Nitro 15</div>
-                    <div class="p-price">
-                        <div class="p-price-current">33.990.000₫</div>
 
-                    </div>
-                    </a>
-                </div>
+                <?php foreach ($dsNoiBat as $sp) {
+                    // Hiển thị ảnh, tên ảnh trong folder phải giống url trong DB
+                    $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
 
-                <div class="product-card">
-                    
-                    
-                    <div class="p-img">
-                        <img src="assets/images/acer_nitro_lite_16.png" alt="Laptop">
-                    </div>
-                    <div class="p-specs">i5-1240P | 16GB | 512GB</div>
-                    <div class="p-name">Laptop Acer Nitro Lite 16</div>
-                    <div class="p-price">
-                        <div class="p-price-current">18.990.000₫</div>
-                        
-                    </div>
-              
-                </div>
+                    // Để khi bấm vô laptop thì biết laptop nào được chọn
+                    $linkSP = "pages/chitietsanpham.php?id=" . $sp['masanpham'];
+                    ?>
 
-                <div class="product-card">
-                   
-                    <div class="p-img">
-                        <img src="assets/images/macbook_E2_pro.webp" alt="Laptop">
-                    </div>
-                    <div class="p-specs">CORE i5-12500H | RTX 4050</div>
-                    <div class="p-name">Laptop MacBook E2 Pro</div>
-                    <div class="p-price">
-                        <div class="p-price-current">23.990.000₫</div>
-                       
-                    </div>
-                 
-                </div>
+                    <div class="product-card">
+                        <a href="<?php echo $linkSP; ?>">
+                            <div class="p-img">
+                                <img src="<?php echo $imgURL; ?>" alt="Laptop">
+                            </div>
+                            <div class="p-specs"><?php echo $sp['cpu'] . " | " . $sp['vga'] ?></div>
+                            <div class="p-name"><?php echo $sp['tensanpham'] ?></div>
+                            <div class="p-price">
+                                <div class="p-price-current"><?php echo formatCurrency($sp['gia_thap_nhat']) ?></div>
 
-                <div class="product-card">
-                
-                    <div class="p-img">
-                        <img src="assets/images/lenovo.jpg" alt="Laptop">
+                            </div>
+                        </a>
                     </div>
-                    <div class="p-specs">R7-7435HS | RTX 4060</div>
-                    <div class="p-name">assets/images/lenovo.jpg</div>
-                    <div class="p-price">
-                        <div class="p-price-current">29.690.000₫</div>
-                
-                    </div>
-                
-                </div>
 
-                <div class="product-card">
-            
-                    <div class="p-img">
-                        <img src="assets/images/lenovo.jpg" alt="Laptop">
-                    </div>
-                    <div class="p-specs">i5-12450H | RTX 3050</div>
-                    <div class="p-name">Laptop MSI Gaming Thin 15 B13UC-1411VN</div>
-                    <div class="p-price">
-                        <div class="p-price-current">18.290.000₫</div>
-                    
-                    </div>
-                   
-                </div>
+                <?php } ?>
             </div>
         </section>
 
+        <!-- Bộ lọc -->
         <section class="filter-section">
+
             <div class="filter-header">
                 <span class="filter-title-text">Bộ lọc tìm kiếm</span>
             </div>
 
             <div class="filter-list">
-                <div class="filter-btn">Hãng <span class="arrow-down">▼</span></div>
-                <div class="filter-btn">Giá <span class="arrow-down">▼</span></div>
-                <div class="filter-btn">RAM <span class="arrow-down">▼</span></div>
-                <div class="filter-btn">Ổ cứng <span class="arrow-down">▼</span></div>
-  
+
+
+                <div class="filter-dropdown">
+                    <div class="filter-btn">Giá <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?gia=duoi-15">Dưới 15 triệu</a>
+                        <a href="pages/timkiem.php?gia=15-20">15 - 20 triệu</a>
+                        <a href="pages/timkiem.php?gia=tren-20">Trên 20 triệu</a>
+                    </div>
+                </div>
+
+                <div class="filter-dropdown">
+                    <div class="filter-btn">RAM <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?ram=8GB">8GB</a>
+                        <a href="pages/timkiem.php?ram=16GB">16GB</a>
+                    </div>
+                </div>
+
+                <div class="filter-dropdown">
+                    <div class="filter-btn">Ổ cứng <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?ocung=512GB">512GB</a>
+                        <a href="pages/timkiem.php?ocung=1TB">1TB</a>
+                    </div>
+                </div>
+
+                <div class="filter-dropdown">
+                    <div class="filter-btn">Card đồ hoạ <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?vga=nvdia">NVIDIA</a>
+                        <a href="pages/timkiem.php?vga=amd">AMD</a>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="quick-filter-list">
-                <div class="quick-tag">Laptop Gaming</div>
-                <div class="quick-tag">Laptop Văn phòng</div>
-
-            </div>
         </section>
 
+        <!-- Bộ lọc -->
         <section class="brands-section">
             <h3>Thương hiệu nổi bật</h3>
             <div class="brand-list">
-                <div class="brand-item"><img src="assets/images/logo_macbook.webp" alt="logo"></div>
-                <div class="brand-item"><img src="assets/images/logo_acer.png" alt="logo"></div>
-                <div class="brand-item"><img src="assets/images/logo_lenovo.png" alt="logo"></div>
+                <div class="brand-item">
+                    <a href="pages/timkiem.php?hang=MacBook"><img src="assets/images/logo_macbook.webp" alt="logo"></a></div>
+                <div class="brand-item">
+                    <a href="pages/timkiem.php?hang=Acer"><img src="assets/images/logo_acer.png" alt="logo"></a></div>
+                <div class="brand-item">
+                    <a href="pages/timkiem.php?hang=Lenovo"><img src="assets/images/logo_lenovo.png" alt="logo"></a></div>
             </div>
         </section>
 
         <section class="category-section">
-            <div class="cat-header" style="border-bottom-color: #d70018;">
-        
-                <div class="cat-title">LAPTOP MỚI</div>
-                <div class="cat-nav">
-                    <a href="#">LAPTOP ACER MỚI</a>
-                    <a href="#">LAPTOP LENOVO MỚI</a>
-                    <a href="#">LAPTOP MACBOOK MỚI</a>
-                </div>
-                <div class="cat-view-all">Xem tất cả ></div>
-            </div>
 
-            <div class="cat-body">
-                
-                <div class="product-grid-5">
-                    <div class="product-card">
-                        
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
-                        </div>
-                        <div class="p-name" style="color: #d70018; font-size: 11px;">Mã SP: LENOVO-X1</div>
-                        <div class="p-name">Lenovo ThinkPad X1 2-in-1 Gen 10 (2025)</div>
-                        <div class="p-price">
-                            <div class="p-price-current">46.990.000 ₫</div>
-                           
-                        </div>
-                    </div>
 
-                    <div class="product-card">
-                      
-                        <div class="cat-img-container">
-                            <img src=assets/images/lenovo.jpg alt="Laptop">
-                        </div>
-                        <div class="p-name" style="color: #d70018; font-size: 11px;">Mã SP: ASUS-V14</div>
-                        <div class="p-name">ASUS Vivobook 14 X1404VA i5-1335U/ 16GB</div>
-                        <div class="p-price">
-                            <div class="p-price-current">12.990.000 ₫</div>
-                           
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                    
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
-                        </div>
-                        <div class="p-name" style="color: #d70018; font-size: 11px;">Mã SP: DELL-I16</div>
-                        <div class="p-name">Dell Inspiron 16 Plus 7640 (2025) Core 5</div>
-                        <div class="p-price">
-                            <div class="p-price-current">17.490.000 ₫</div>
-                        
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                   
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
-                        </div>
-                        <div class="p-name" style="color: #d70018; font-size: 11px;">Mã SP: HP-OMNI</div>
-                        <div class="p-name">HP Omnibook X Flip Laptop AI 14-fm0023dx</div>
-                        <div class="p-price">
-                            <div class="p-price-current">24.500.000 ₫</div>
-                            
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
-                        </div>
-                        <div class="p-name" style="color: #d70018; font-size: 11px;">Mã SP: LENOVO-G7</div>
-                        <div class="p-name">Lenovo Thinkbook 14 G7+ (2025) Intel</div>
-                        <div class="p-price">
-                            <div class="p-price-current">22.990.000 ₫</div>
-                       
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="category-section">
-            <div class="cat-header" style="border-bottom-color: #d70018;">
-                <div class="cat-title" style="background: #ce0000;">GAMING</div>
-                <div class="cat-nav">
-                    <a href="#">ACER GAMING</a>
-                    <a href="#">LENOVO GAMING</a>
-                </div>
-                <div class="cat-view-all">Xem tất cả ></div>
-            </div>
+            <!-- Hiển thị toàn bộ laptop -->
 
             <div class="cat-body">
                 <div class="product-grid-5">
-                    <div class="product-card">
-           
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
-                        </div>
-                        <div class="p-name">Laptop Gaming ASUS ROG Strix G16</div>
-                        <div class="p-price">
-                            <div class="p-price-current">39.990.000 ₫</div>
-                        </div>
-                    </div>
 
-                    <div class="product-card">
-                        
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
-                        </div>
-                        <div class="p-name">Laptop Gaming ASUS ROG Strix G16</div>
-                        <div class="p-price">
-                            <div class="p-price-current">39.990.000 ₫</div>
-                        </div>
-                    </div>
+                    <?php foreach ($dsMoi as $sp) {
+                        $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
+                        $linkSP = "pages/chitietsanpham.php?id=" . $sp['masanpham'];
+                        ?>
 
-                    <div class="product-card">
-                     
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
-                        </div>
-                        <div class="p-name">Laptop Gaming ASUS ROG Strix G16</div>
-                        <div class="p-price">
-                            <div class="p-price-current">39.990.000 ₫</div>
-                        </div>
-                    </div>
+                        <div class="product-card">
+                            <a href="<?php echo $linkSP; ?>">
+                                <div class="cat-img-container">
+                                    <img src="<?php echo $imgURL ?>" alt="Laptop">
+                                </div>
 
-                    <div class="product-card">
-                        
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
-                        </div>
-                        <div class="p-name">Laptop Gaming ASUS ROG Strix G16</div>
-                        <div class="p-price">
-                            <div class="p-price-current">39.990.000 ₫</div>
-                        </div>
-                    </div>
+                                <div class="p-name"><?php echo $sp['tensanpham'] . " | " . $sp['cpu'] . $sp['vga'] ?></div>
+                                <div class="p-price">
+                                    <div class="p-price-current"><?php echo formatCurrency($sp['gia_thap_nhat']) ?></div>
 
-                     <div class="product-card">
-                        
-                        <div class="cat-img-container">
-                            <img src="assets/images/lenovo.jpg" alt="Laptop">
+                                </div>
+                            </a>
                         </div>
-                        <div class="p-name">Laptop Gaming ASUS ROG Strix G16</div>
-                        <div class="p-price">
-                            <div class="p-price-current">39.990.000 ₫</div>
-                        </div>
-                    </div>
-
+                    <?php } ?>
                 </div>
+
             </div>
         </section>
+        <!-- Laptop Gaming -->
+
+
     </div>
 </body>
 
