@@ -7,6 +7,33 @@ include("includes/header.php");
 $dsNoiBat = getSanphamNoiBat($pdo);
 $dsMoi = getSanphamMoi($pdo);
 $dsGaming = getSanphamGaming($pdo);
+
+
+// 1. Lấy TẤT CẢ tham số từ URL
+$tuKhoa = $_GET['tukhoa'] ?? null;
+$hang = $_GET['hang'] ?? null;
+$gia = $_GET['gia'] ?? null;
+$ram = $_GET['ram'] ?? null;
+$ocung = $_GET['ocung'] ?? null; // Mới
+$vga = $_GET['vga'] ?? null;   // Mới
+
+// 2. Gọi hàm tìm kiếm với đầy đủ tham số
+$dsKetQua = timKiemSanPham($pdo, $tuKhoa, $hang, $gia, $ram, $ocung, $vga);
+
+// 3. Tạo tiêu đề trang động
+$tieuDe = "Kết quả tìm kiếm";
+if ($hang)
+    $tieuDe = "Laptop hãng " . $hang;
+if ($gia)
+    $tieuDe = "Laptop theo mức giá";
+if ($ram)
+    $tieuDe = "Laptop RAM " . $ram;
+if ($ocung)
+    $tieuDe = "Laptop ổ cứng " . $ocung;
+if ($vga)
+    $tieuDe = "Laptop Card đồ họa " . strtoupper($vga);
+?>
+
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -55,12 +82,12 @@ $dsGaming = getSanphamGaming($pdo);
 
         <!-- Bộ lọc -->
         <section class="filter-section">
+
             <div class="filter-header">
                 <span class="filter-title-text">Bộ lọc tìm kiếm</span>
             </div>
 
             <div class="filter-list">
-
 
 
                 <div class="filter-dropdown">
@@ -77,26 +104,24 @@ $dsGaming = getSanphamGaming($pdo);
                     <div class="dropdown-content">
                         <a href="pages/timkiem.php?ram=8GB">8GB</a>
                         <a href="pages/timkiem.php?ram=16GB">16GB</a>
-                    
-                    </div>
-                </div>
-
-                  <div class="filter-dropdown">
-                    <div class="filter-btn">Ổ cứng <span class="arrow-down">▼</span></div>
-                    <div class="dropdown-content">
-                        <a href="pages/timkiem.php?ocung=512GB">512GB</a>
-                        <a href="pages/timkiem.php?ocung=1T">1T</a>
                     </div>
                 </div>
 
                 <div class="filter-dropdown">
-                    <div class="filter-btn">card đồ hoạ <span class="arrow-down">▼</span></div>
+                    <div class="filter-btn">Ổ cứng <span class="arrow-down">▼</span></div>
                     <div class="dropdown-content">
-                        <a href="pages/timkiem.php?vga=nvdia">NVDIA</a>
-                        <a href="pages/timkiem.php?vga=amd">AMD</a>
+                        <a href="pages/timkiem.php?ocung=512GB">512GB</a>
+                        <a href="pages/timkiem.php?ocung=1TB">1TB</a>
                     </div>
                 </div>
 
+                <div class="filter-dropdown">
+                    <div class="filter-btn">Card đồ hoạ <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?vga=nvdia">NVIDIA (RTX/GTX)</a>
+                        <a href="pages/timkiem.php?vga=amd">AMD</a>
+                    </div>
+                </div>
 
             </div>
 
@@ -104,22 +129,26 @@ $dsGaming = getSanphamGaming($pdo);
                 <a href="pages/timkiem.php?tukhoa=Gaming" class="quick-tag">Laptop Gaming</a>
                 <a href="pages/timkiem.php?tukhoa=VanPhong" class="quick-tag">Laptop Văn phòng</a>
             </div>
+
         </section>
 
         <!-- Bộ lọc -->
         <section class="brands-section">
             <h3>Thương hiệu nổi bật</h3>
             <div class="brand-list">
-                <div class="brand-item"><img src="assets/images/logo_macbook.webp" alt="logo"></div>
-                <div class="brand-item"><img src="assets/images/logo_acer.png" alt="logo"></div>
-                <div class="brand-item"><img src="assets/images/logo_lenovo.png" alt="logo"></div>
+                <div class="brand-item">
+                    <a href="pages/timkiem.php?hang=MacBook"><img src="assets/images/logo_macbook.webp" alt="logo"></div></a>
+                <div class="brand-item">
+                    <a href="pages/timkiem.php?hang=Acer"></a><img src="assets/images/logo_acer.png" alt="logo"></div>
+                <div class="brand-item">
+                    <a href="pages/timkiem.php?hang=Lenovo"></a><img src="assets/images/logo_lenovo.png" alt="logo"></div>
             </div>
         </section>
 
         <section class="category-section">
 
 
-            <!-- Laptop mới -->
+            <!-- Hiển thị toàn bộ laptop -->
 
             <div class="cat-body">
                 <div class="product-grid-5">
@@ -135,7 +164,7 @@ $dsGaming = getSanphamGaming($pdo);
                                     <img src="<?php echo $imgURL ?>" alt="Laptop">
                                 </div>
 
-                                <div class="p-name"><?php echo $sp['tensanpham'] ."|" . $sp['cpu'] .$sp ['vga'] ?></div>
+                                <div class="p-name"><?php echo $sp['tensanpham'] . " | " . $sp['cpu'] . $sp['vga'] ?></div>
                                 <div class="p-price">
                                     <div class="p-price-current"><?php echo formatCurrency($sp['gia_thap_nhat']) ?></div>
 

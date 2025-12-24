@@ -55,27 +55,26 @@ function getSanphamGaming($pdo) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// 9. Hàm tìm kiếm và lọc sản phẩm nâng cao
-function timKiemSanPham($pdo, $tuKhoa = null, $hang = null, $mucGia = null, $ram = null) {
-    // Câu truy vấn cơ bản
+// 9. Hàm tìm kiếm và lọc sản phẩm nâng cao (Đã cập nhật)
+function timKiemSanPham($pdo, $tuKhoa = null, $hang = null, $mucGia = null, $ram = null, $ocung = null, $vga = null) {
+    // Join bảng cau_hinh để lọc RAM, Giá, Ổ cứng
+    // Join bảng hinh để lấy ảnh
     $sql = "SELECT sp.*, h.urlhinh, MIN(ch.giatien) as gia_thap_nhat 
             FROM san_pham sp 
             JOIN cau_hinh ch ON sp.masanpham = ch.masanpham 
             LEFT JOIN hinh h ON sp.masanpham = h.masanpham 
-            WHERE 1=1"; // 1=1 là mẹo để dễ dàng nối thêm các điều kiện AND phía sau
+            WHERE 1=1"; 
 
     $params = [];
 
-    // 1. Lọc theo từ khóa (Tên sản phẩm)
+    // 1. Lọc theo Từ khóa
     if ($tuKhoa != null) {
         $sql .= " AND sp.tensanpham LIKE :tuKhoa";
         $params[':tuKhoa'] = "%$tuKhoa%";
     }
 
-    // 2. Lọc theo Hãng (Thương hiệu)
+    // 2. Lọc theo Hãng
     if ($hang != null) {
-        // Giả sử cột mathuonghieu lưu tên hãng hoặc bạn join bảng thương hiệu
-        // Ở đây mình ví dụ lọc theo tên sản phẩm có chứa tên hãng (cách đơn giản nhất)
         $sql .= " AND sp.tensanpham LIKE :hang";
         $params[':hang'] = "%$hang%";
     }
@@ -86,7 +85,7 @@ function timKiemSanPham($pdo, $tuKhoa = null, $hang = null, $mucGia = null, $ram
         $params[':ram'] = "%$ram%";
     }
 
-    // 4. Lọc theo Mức giá (Xử lý logic khoảng giá)
+    // 4. Lọc theo Mức giá
     if ($mucGia != null) {
         if ($mucGia == 'duoi-15') {
             $sql .= " AND ch.giatien < 15000000";
@@ -97,7 +96,29 @@ function timKiemSanPham($pdo, $tuKhoa = null, $hang = null, $mucGia = null, $ram
         }
     }
 
-    // Group by và Order by
+    // 5. Lọc theo Ổ cứng (Mới)
+    if ($ocung != null) {
+        // Dùng LIKE để '1T' vẫn tìm ra được '1TB'
+        $sql .= " AND ch.ocung LIKE :ocung";
+        $params[':ocung'] = "%$ocung%";
+    }
+
+    // 6. Lọc theo Card đồ họa (Mới - Xử lý thông minh)
+    if ($vga != null) {
+        if ($vga == 'nvdia') {
+            // Nếu khách chọn NVDIA -> Tìm các máy có RTX, GTX hoặc NVIDIA
+            $sql .= " AND (sp.vga LIKE '%RTX%' OR sp.vga LIKE '%GTX%' OR sp.vga LIKE '%NVIDIA%')";
+        } elseif ($vga == 'amd') {
+            // Nếu khách chọn AMD -> Tìm các máy có AMD hoặc Radeon
+            $sql .= " AND (sp.vga LIKE '%AMD%' OR sp.vga LIKE '%Radeon%' OR sp.vga LIKE '%RX%')";
+        } else {
+            // Tìm chính xác theo từ khóa khác
+            $sql .= " AND sp.vga LIKE :vga";
+            $params[':vga'] = "%$vga%";
+        }
+    }
+
+    // Group by để không bị lặp sản phẩm
     $sql .= " GROUP BY sp.masanpham ORDER BY sp.masanpham DESC";
 
     $stmt = $pdo->prepare($sql);

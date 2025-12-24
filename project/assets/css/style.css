@@ -201,49 +201,6 @@ img {
     overflow: hidden;
 }
 
-.cat-header {
-    display: flex;
-    align-items: center;
-    border-bottom: 2px solid #eee;
-}
-
-.cat-title {
-    background: #d70018;
-    color: white;
-    padding: 10px 30px 10px 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    position: relative;
-    /* Tạo hình vát chéo */
-    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
-    margin-right: 10px;
-}
-
-.cat-nav {
-    display: flex;
-    gap: 20px;
-    flex-grow: 1;
-}
-
-.cat-nav a {
-    text-decoration: none;
-    color: #555;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-.cat-nav a:hover { color: #d70018; }
-
-.cat-view-all {
-    margin-right: 20px;
-    font-size: 12px;
-    color: #007bff;
-    cursor: pointer;
-}
-
-.cat-body {
-    padding: 15px;
-}
 
 /* Chỉnh sửa style thẻ sản phẩm cho phần category (khác một chút so với phần hot) */
 .cat-body .product-card {
@@ -368,7 +325,58 @@ img {
     }
 }
 
+/* * CSS CHO DROPDOWN (MENU THẢ XUỐNG) */ 
+.filter-dropdown {
+    position: relative; /* Làm mốc tọa độ */
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.filter-btn {
+    background-color: #f1f1f1;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    font-weight: 500;
+}
+
+.dropdown-content {
+    display: none; /* Mặc định ẩn đi */
+    position: absolute; /* Nổi lên trên các thành phần khác */
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100; /* Đảm bảo nó nằm trên cùng */
+    border-radius: 5px;
+    top: 100%; /* Hiện ngay bên dưới nút */
+    left: 0;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    color: #d70018;
+}
+
+/* Khi di chuột vào nút cha (.filter-dropdown) thì hiện nút con (.dropdown-content) */
+.filter-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+/* =========================== */
 /* --- HEADER BAR (Nền đỏ) --- */
+/* =========================== */
+
 .header{
     background-color: #eb0707da; /* Màu đỏ FPT */
     width: 100%;
