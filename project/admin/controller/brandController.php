@@ -79,6 +79,25 @@ if (isset($_POST['btnCapNhat'])){
     else{
         header("Location: ../admin.php?page=quanlythuonghieu");
     }
+}
 
-    
+// Đổi trạng thái
+if (isset($_GET['doitrangthai'])){
+    try{
+        $mathuonghieu = $_GET['id'];
+        $trangThaiHienTai = $_GET['trangthaihientai'];
+        $trangThaiHienTai = ($trangThaiHienTai == 0) ? 1 : 0;
+
+        $sql = "UPDATE `thuong_hieu` SET trangthai=? WHERE mathuonghieu=?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$trangThaiHienTai, $mathuonghieu]);
+
+        header("Location: ../admin.php?page=quanlythuonghieu");
+    }
+    catch (Exception $ex){
+        echo "<script>
+                console.error('". $ex->getMessage() ."');
+            </script>";
+    }
+
 }
