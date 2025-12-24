@@ -27,7 +27,12 @@
         </thead>
         <tbody>
             <?php
-                $sql = "SELECT * FROM thuong_hieu";
+                $sql = "SELECT thuong_hieu.mathuonghieu, tenthuonghieu, COUNT(san_pham.masanpham) as soluong
+                        FROM thuong_hieu
+                            LEFT JOIN san_pham on san_pham.mathuonghieu = thuong_hieu.mathuonghieu
+                        GROUP BY mathuonghieu, tenthuonghieu
+                        ";
+
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute();
 
@@ -39,7 +44,7 @@
                     <tr>
                         <td><?php echo $count; ?></td>
                         <td><?php echo $dong['tenthuonghieu']; ?></td>
-                        <td>?</td>
+                        <td><?php echo $dong['soluong']; ?></td>
                         <td>
                             <a href="#" 
                                 class="btn btn-edit btn-update" 
@@ -48,7 +53,9 @@
                                 Sửa
                             </a>
                             
-                            <a href="#" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                            <a href="#" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                Xóa
+                            </a>
                         </td>
                     </tr>
 
