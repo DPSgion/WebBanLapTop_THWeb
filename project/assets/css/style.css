@@ -63,7 +63,7 @@ img {
 .product-card {
     background: white;
     border-radius: 8px;
-    padding: 10px;
+    padding: 22px;
     position: relative;
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
@@ -112,7 +112,7 @@ img {
 
 /* Tên sản phẩm */
 .p-name {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
     line-height: 1.4;
     margin-bottom: 5px;
@@ -122,14 +122,16 @@ img {
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: 36px;
+    color: black;
     
 }
 
 /* Giá */
-.p-price-current {
+.p-price {
     color: #d70018;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 17px;
+    text-align: center;
 }
 
 
@@ -247,6 +249,7 @@ img {
 .cat-body .product-card {
     border: 1px solid #eee;
     box-shadow: none;
+
 }
 .cat-body .product-card:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);

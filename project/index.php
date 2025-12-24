@@ -4,9 +4,9 @@ include("includes/functions.php");
 $path = "."; // File này nằm ngang hàng với thư mục assets
 include("includes/header.php");
 
-$dsNoiBat= getSanphamNoiBat($pdo);
-$dsMoi= getSanphamMoi($pdo);
-$dsGaming= getSanphamGaming($pdo);
+$dsNoiBat = getSanphamNoiBat($pdo);
+$dsMoi = getSanphamMoi($pdo);
+$dsGaming = getSanphamGaming($pdo);
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -27,54 +27,86 @@ $dsGaming= getSanphamGaming($pdo);
 
             <div class="product-grid-5">
 
-                <?php foreach($dsNoiBat as $sp){
+                <?php foreach ($dsNoiBat as $sp) {
                     // Hiển thị ảnh, tên ảnh trong folder phải giống url trong DB
                     $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
 
                     // Để khi bấm vô laptop thì biết laptop nào được chọn
                     $linkSP = "pages/chitietsanpham.php?id=" . $sp['masanpham'];
-                 ?>
+                    ?>
 
-                <div class="product-card">
-                    <a href="<?php echo $linkSP; ?>">
-                    <div class="p-img">
-                        <img src="<?php echo $imgURL; ?>" alt="Laptop">
-                    </div>
-                    <div class="p-specs"><?php echo $sp['cpu'] ." | " . $sp['vga']  ?></div>
-                    <div class="p-name"  ><?php echo $sp['tensanpham']  ?></div>
-                    <div class="p-price">
-                        <div class="p-price-current"><?php echo formatCurrency($sp['gia_thap_nhat']) ?></div>
+                    <div class="product-card">
+                        <a href="<?php echo $linkSP; ?>">
+                            <div class="p-img">
+                                <img src="<?php echo $imgURL; ?>" alt="Laptop">
+                            </div>
+                            <div class="p-specs"><?php echo $sp['cpu'] . " | " . $sp['vga'] ?></div>
+                            <div class="p-name"><?php echo $sp['tensanpham'] ?></div>
+                            <div class="p-price">
+                                <div class="p-price-current"><?php echo formatCurrency($sp['gia_thap_nhat']) ?></div>
 
+                            </div>
+                        </a>
                     </div>
-                    </a>
-                </div>
 
                 <?php } ?>
             </div>
         </section>
-                
-                <!-- Bộ lọc -->
+
+        <!-- Bộ lọc -->
         <section class="filter-section">
             <div class="filter-header">
                 <span class="filter-title-text">Bộ lọc tìm kiếm</span>
             </div>
 
             <div class="filter-list">
-                <div class="filter-btn">Hãng <span class="arrow-down">▼</span></div>
-                <div class="filter-btn">Giá <span class="arrow-down">▼</span></div>
-                <div class="filter-btn">RAM <span class="arrow-down">▼</span></div>
-                <div class="filter-btn">Ổ cứng <span class="arrow-down">▼</span></div>
-  
+
+
+
+                <div class="filter-dropdown">
+                    <div class="filter-btn">Giá <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?gia=duoi-15">Dưới 15 triệu</a>
+                        <a href="pages/timkiem.php?gia=15-20">15 - 20 triệu</a>
+                        <a href="pages/timkiem.php?gia=tren-20">Trên 20 triệu</a>
+                    </div>
+                </div>
+
+                <div class="filter-dropdown">
+                    <div class="filter-btn">RAM <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?ram=8GB">8GB</a>
+                        <a href="pages/timkiem.php?ram=16GB">16GB</a>
+                    
+                    </div>
+                </div>
+
+                  <div class="filter-dropdown">
+                    <div class="filter-btn">Ổ cứng <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?ocung=512GB">512GB</a>
+                        <a href="pages/timkiem.php?ocung=1T">1T</a>
+                    </div>
+                </div>
+
+                <div class="filter-dropdown">
+                    <div class="filter-btn">card đồ hoạ <span class="arrow-down">▼</span></div>
+                    <div class="dropdown-content">
+                        <a href="pages/timkiem.php?vga=nvdia">NVDIA</a>
+                        <a href="pages/timkiem.php?vga=amd">AMD</a>
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="quick-filter-list">
-                <div class="quick-tag">Laptop Gaming</div>
-                <div class="quick-tag">Laptop Văn phòng</div>
-
+                <a href="pages/timkiem.php?tukhoa=Gaming" class="quick-tag">Laptop Gaming</a>
+                <a href="pages/timkiem.php?tukhoa=VanPhong" class="quick-tag">Laptop Văn phòng</a>
             </div>
         </section>
 
-             <!-- Bộ lọc -->
+        <!-- Bộ lọc -->
         <section class="brands-section">
             <h3>Thương hiệu nổi bật</h3>
             <div class="brand-list">
@@ -85,82 +117,39 @@ $dsGaming= getSanphamGaming($pdo);
         </section>
 
         <section class="category-section">
-            <div class="cat-header" style="border-bottom-color: #d70018;">
-        
-                <div class="cat-title">LAPTOP MỚI</div>
-                <div class="cat-nav">
-                    <a href="#">LAPTOP ACER MỚI</a>
-                    <a href="#">LAPTOP LENOVO MỚI</a>
-                    <a href="#">LAPTOP MACBOOK MỚI</a>
-                </div>
-                <div class="cat-view-all">Xem tất cả ></div>
-            </div>
 
-                    <!-- Laptop mới -->
+
+            <!-- Laptop mới -->
 
             <div class="cat-body">
                 <div class="product-grid-5">
-                                
-                <?php foreach($dsMoi as $sp){
-                    $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
-                    $linkSP = "pages/chitietsanpham.php?id=" . $sp['masanpham'];
-                 ?>
 
-                    <div class="product-card">
-                        <a href="<?php echo $linkSP; ?>">
-                            <div class="cat-img-container">
-                                <img src="<?php echo $imgURL ?>" alt="Laptop">
-                            </div>
-                    
-                            <div class="p-name"><?php echo $sp['tensanpham']?></div>
-                            <div class="p-price">
-                                <div class="p-price-current"><?php echo formatCurrency( $sp['gia_thap_nhat'])?></div>
-                            
-                            </div>
-                        </a>
-                    </div>
+                    <?php foreach ($dsMoi as $sp) {
+                        $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
+                        $linkSP = "pages/chitietsanpham.php?id=" . $sp['masanpham'];
+                        ?>
+
+                        <div class="product-card">
+                            <a href="<?php echo $linkSP; ?>">
+                                <div class="cat-img-container">
+                                    <img src="<?php echo $imgURL ?>" alt="Laptop">
+                                </div>
+
+                                <div class="p-name"><?php echo $sp['tensanpham'] ."|" . $sp['cpu'] .$sp ['vga'] ?></div>
+                                <div class="p-price">
+                                    <div class="p-price-current"><?php echo formatCurrency($sp['gia_thap_nhat']) ?></div>
+
+                                </div>
+                            </a>
+                        </div>
                     <?php } ?>
                 </div>
-                
+
             </div>
         </section>
-
         <!-- Laptop Gaming -->
 
-        <section class="category-section">
-            <div class="cat-header" style="border-bottom-color: #d70018;">
-                <div class="cat-title" style="background: #ce0000;">GAMING</div>
-                <div class="cat-nav">
-                    <a href="#">ACER GAMING</a>
-                    <a href="#">LENOVO GAMING</a>
-                </div>
-                <div class="cat-view-all">Xem tất cả ></div>
-            </div>
 
-            <div class="cat-body">
-                <div class="product-grid-5">
-                      <?php foreach($dsGaming as $sp){
-                            $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
-                            $linkSP = "pages/chitietsanpham.php?id=" . $sp['masanpham'];
-                        ?>
-                    <div class="product-card"> 
-                        <a href="<?php echo $linkSP ?>">    
- 
-                            <div class="cat-img-container">
-                                <img src="<?php echo $imgURL?>" alt="Laptop">
-                            </div>
-                            <div class="p-name"><?php echo $sp['tensanpham'] ?></div>
-                            <div class="p-price">
-                                <div class="p-price-current"><?php echo formatCurrency($sp['gia_thap_nhat']) ?></div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <?php } ?>
-
-                </div>
-            </div>
-        </section>
     </div>
 </body>
 
