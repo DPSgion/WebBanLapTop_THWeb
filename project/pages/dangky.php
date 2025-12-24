@@ -21,7 +21,7 @@ include "../includes/header.php";
             <div class="form-group">
                 <label for="sdt">Số điện thoại</label>
                 <input type="tel" id="sdt" name="sdt" placeholder="Nhập số điện thoại..." 
-                        pattern="[0-9]{10,11}" title="Sai định dạng số điện thoại" required>
+                        pattern="[0-9]{10,11}" title="Sai định dạng số điện thoại" maxlength="11" required>
             </div>
 
             <div class="form-group">
@@ -46,7 +46,7 @@ include "../includes/header.php";
         <br>
 
         <div class="register-link">
-               Bạn đã có tài khoản? <a href="dangky.php">Quay lại Đăng nhập</a>
+               Bạn đã có tài khoản? <a href="dangnhap.php">Quay lại Đăng nhập</a>
                 
             </a>
         </div>
