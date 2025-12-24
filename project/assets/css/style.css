@@ -448,22 +448,6 @@ img {
     
 }
 
-
-
-/* Tác động chính xác vào thẻ a nằm trong danh sách của header-bar */
-.header-bar ul li a {
-    text-decoration: none !important; /* Dùng !important để ép buộc bỏ gạch chân */
-    color: inherit; /* Link sẽ lấy màu chữ của thẻ cha (thường là màu đen) thay vì màu xanh */
-    display: flex; /* Giúp căn chỉnh ảnh và chữ thẳng hàng nếu có icon */
-    align-items: center;
-}
-
-.header-bar ul li a:hover {
-    text-decoration: none !important;
-   
-}
-
-
 /* --- CSS CHO HEADER (Mới cập nhật) --- */
 
 /* 1. Icon User và Giỏ hàng */
@@ -524,6 +508,20 @@ img {
     gap: 5px;
     color: white;
     text-decoration: none;
+}
+
+
+/* Tác động chính xác vào thẻ a nằm trong danh sách của header-bar */
+.header-bar ul li a {
+    text-decoration: none !important; /* Dùng !important để ép buộc bỏ gạch chân */
+    color: inherit; /* Link sẽ lấy màu chữ của thẻ cha (thường là màu đen) thay vì màu xanh */
+    display: flex; /* Giúp căn chỉnh ảnh và chữ thẳng hàng nếu có icon */
+    align-items: center;
+}
+
+.header-bar ul li a:hover {
+    text-decoration: none !important;
+   
 }
 
 /* =================================== */
@@ -699,12 +697,17 @@ img {
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 6px;
-    padding: 10px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
     cursor: pointer;
     text-align: center;       /* Canh lề trái cho nội dung nút */
     font-size: 13px;
     transition: 0.2s;
 
+}
+/* 1. Ẩn nút tròn radio đi */
+.sp-right-cauhinh input[type="radio"] {
+     display: none; 
 }
 
 .sp-right-cauhinh-btn small {
@@ -715,9 +718,12 @@ img {
     margin-top: 5px;
 }
 
-.sp-right-cauhinh-btn:hover {
+/* Đổi màu khi hover và active */
+.sp-right-cauhinh-btn:hover,
+.sp-right-cauhinh-btn.active {
     border-color: #d70018;
     background-color: #fff5f5; /* Nền đỏ nhạt khi hover */
+    color: #d70018;
 }
 
 /* Bảng thông số kỹ thuật */
