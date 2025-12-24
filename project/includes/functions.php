@@ -113,18 +113,5 @@ function timKiemSanPham($pdo, $tuKhoa = null, $hang = null, $mucGia = null, $ram
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// 10. Hàm hỗ trợ tạo Link Xóa bộ lọc 
-// Hàm này sẽ lấy URL hiện tại, xóa bỏ tham số $keyToRemove và trả về URL mới
-function createLinkWithout($keyToRemove) {
-    $params = $_GET; // Lấy tất cả tham số trên URL hiện tại
-    
-    // Nếu tham số đó tồn tại thì xóa nó đi
-    if (isset($params[$keyToRemove])) {
-        unset($params[$keyToRemove]); 
-    }
-    
-    // Nếu còn tham số khác thì nối lại thành chuỗi (VD: ?hang=Acer&gia=15-20)
-    // Nếu không còn tham số nào thì trả về trang gốc timkiem.php
-    return count($params) > 0 ? 'timkiem.php?' . http_build_query($params) : 'timkiem.php';
-}
+
 ?>

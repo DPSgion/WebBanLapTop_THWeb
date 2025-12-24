@@ -6,7 +6,7 @@ include("includes/header.php");
 
 $dsNoiBat = getSanphamNoiBat($pdo);
 $dsMoi = getSanphamMoi($pdo);
-$dsGaming = getSanphamGaming($pdo);
+
 
 
 // 1. Lấy TẤT CẢ tham số từ URL
