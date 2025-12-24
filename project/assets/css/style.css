@@ -448,6 +448,8 @@ img {
     
 }
 
+
+
 /* Tác động chính xác vào thẻ a nằm trong danh sách của header-bar */
 .header-bar ul li a {
     text-decoration: none !important; /* Dùng !important để ép buộc bỏ gạch chân */
@@ -459,6 +461,69 @@ img {
 .header-bar ul li a:hover {
     text-decoration: none !important;
    
+}
+
+
+/* --- CSS CHO HEADER (Mới cập nhật) --- */
+
+/* 1. Icon User và Giỏ hàng */
+.header-icon-user, 
+.header-icon-cart {
+    width: 24px;
+    height: 24px;
+    object-fit: contain; /* Đảm bảo ảnh không bị méo */
+}
+
+/* 2. Khung chứa thông tin User khi đã đăng nhập */
+.user-logged-in {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Tên người dùng */
+.user-name {
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    line-height: 1.2;
+}
+
+/* Link Đăng xuất */
+.logout-link {
+    font-size: 11px;
+    color: #ffcccc; /* Màu hồng nhạt */
+    text-decoration: none;
+    margin-top: 2px;
+}
+
+.logout-link:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* 3. Link Đăng nhập (khi chưa login) */
+.user-login-link {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* 4. Link Giỏ hàng */
+.cart-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    text-decoration: none;
 }
 
 /* =================================== */
