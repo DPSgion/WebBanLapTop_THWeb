@@ -1,5 +1,14 @@
 <?php
     include("../config/configDB.php");
+    
+
+    $stmtBrand = $pdo->prepare("SELECT * FROM thuong_hieu");
+    $stmtBrand->execute();
+    $dsThuongHieu = $stmtBrand->fetchAll(PDO::FETCH_ASSOC);
+
+    // Lấy giá trị hiện tại trên URL để giữ trạng thái đã chọn
+    $currentBrand = isset($_GET['brand']) ? $_GET['brand'] : '';
+    $currentSort = isset($_GET['sort']) ? $_GET['sort'] : 'newest';
 ?>
 
 <div class="main-title">
@@ -7,48 +16,43 @@
 </div>
 
 <div class="toolbar">
-    <div class="search-box">
-        <input type="text" id="search-product" placeholder="Tìm tên sản phẩm...">
+    <form action="" method="GET" class="search-box">
+        <input type="hidden" name="page" value="<?php echo isset($_GET['page']) ? $_GET['page'] : ''; ?>">
+
+        <input type="text" name="txtSearch" id="search-input" 
+                placeholder="Tìm kiếm thương hiệu ..."
+                value="<?php echo isset($_GET['txtSearch']) ? htmlspecialchars($_GET['txtSearch']) : ''; ?>">
         <button class="btn-search">Tìm</button>
-    </div>
+    </form>
     <button id="openProductModalBtn" class="btn btn-primary">Thêm sản phẩm mới</button>
 </div>
 
-<div class="filter-bar">
+<form action="" method="GET" class="filter-bar">
+    
+    <input type="hidden" name="page" value="<?php echo isset($_GET['page']) ? $_GET['page'] : ''; ?>">
+    <input type="hidden" name="txtSearch" value="<?php echo isset($_GET['txtSearch']) ? htmlspecialchars($_GET['txtSearch']) : ''; ?>">
+
     <div class="filter-left">
-        <select class="form-select">
+        <select name="brand" class="form-select" onchange="this.form.submit()">
             <option value="">-- Tất cả Hãng --</option>
-            <option value="dell">Acer</option>
-            <option value="hp">Macbook</option>
-            <option value="macbook">Lenovo</option>
-        </select>
-
-        <select class="form-select">
-            <option value="">-- Tất cả RAM --</option>
-            <option value="8gb">8GB</option>
-            <option value="16gb">16GB</option>
-            <option value="32gb">32GB</option>
-        </select>
-
-        <select class="form-select">
-            <option value="">-- Ổ cứng --</option>
-            <option value="ssd-256">SSD 256GB</option>
-            <option value="ssd-512">SSD 512GB</option>
-            <option value="ssd-1tb">SSD 1TB</option>
+            <?php foreach ($dsThuongHieu as $th): ?>
+                <option value="<?php echo $th['mathuonghieu']; ?>" 
+                    <?php echo ($currentBrand == $th['mathuonghieu']) ? 'selected' : ''; ?>>
+                    <?php echo $th['tenthuonghieu']; ?>
+                </option>
+            <?php endforeach; ?>
         </select>
     </div>
 
     <div class="filter-right">
-        <select class="form-select">
-            <option value="newest">Mới nhất</option>
-            <option value="price-asc">Giá: Thấp -> Cao</option>
-            <option value="price-desc">Giá: Cao -> Thấp</option>
-            <option value="qty-desc">Số lượng nhiều nhất</option>
+        <select name="sort" class="form-select" onchange="this.form.submit()">
+            <option value="newest" <?php echo ($currentSort == 'newest') ? 'selected' : ''; ?>>Mới nhất</option>
+            <option value="price-asc" <?php echo ($currentSort == 'price-asc') ? 'selected' : ''; ?>>Giá: Thấp -> Cao</option>
+            <option value="price-desc" <?php echo ($currentSort == 'price-desc') ? 'selected' : ''; ?>>Giá: Cao -> Thấp</option>
+            <option value="qty-desc" <?php echo ($currentSort == 'qty-desc') ? 'selected' : ''; ?>>Số lượng nhiều nhất</option>
         </select>
     </div>
-
-
-</div>
+</form>
 
 <div class="table-container">
     <table class="table-admin">
@@ -63,55 +67,87 @@
             </tr>
         </thead>
         <tbody>
-
             <?php
-            
-            $sqlProduct = " SELECT 	sp.masanpham, sp.tensanpham, sp.cpu, sp.vga, sp.man_hinh, sp.pin, 
-                                    ch.ram, ch.ocung, ch.giatien, ch.soluong
-                            FROM `san_pham` sp
-                                    inner join cau_hinh ch on ch.masanpham = sp.masanpham";
+            $sqlProduct = "SELECT sp.masanpham, sp.tensanpham, sp.cpu, sp.vga, sp.man_hinh, sp.pin, 
+                                ch.ram, ch.ocung, ch.giatien, ch.soluong
+                        FROM `san_pham` sp
+                        INNER JOIN cau_hinh ch ON ch.masanpham = sp.masanpham
+                        WHERE 1=1"; // Mẹo: thêm WHERE 1=1 để dễ dàng nối chuỗi AND phía sau
 
-            $stmt = $pdo->prepare($sqlProduct);
-            $stmt->execute();
-
-            $dsSP = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $count = 1;
-            foreach ($dsSP as $sanpham){
-                ?>
-                <tr>
-                    <td><?php echo $count; ?></td>
-                    <td>
-                        <strong><?php echo $sanpham['tensanpham']; ?></strong><br>
-                    </td>
-                    <td class="config-cell">
-                        - CPU: <?php echo $sanpham['cpu'] ?><br>
-                        - VGA: <?php echo $sanpham['vga'] ?><br>
-                        - Màn: <?php echo $sanpham['man_hinh'] ?><br>
-                        - RAM: <?php echo $sanpham['ram'] ?><br>
-                        - Ổ cứng: <?php echo $sanpham['ocung'] ?><br>
-                        - Pin: <?php echo $sanpham['pin'] ?>
-                    </td>
-                    <td style="color: red; font-weight: bold;">
-                        <?php echo number_format($sanpham['giatien'], 0, ',', '.')  ?> đ
-                    </td>
-                    <td><?php echo $sanpham['soluong'] ?></td>
-                    <td>
-                        <a href="javascript:void(0);" 
-                            class="btn btn-edit btn-edit-product" 
-                            data-id="<?php echo $sanpham['masanpham']; ?>">
-                            Sửa
-                        </a>
-                        <a href="#" class="btn btn-delete">Xóa</a>
-                    </td>
-                </tr>
-
-                <?php
-                $count++;
+            // Tìm kiếm
+            $keyword = '';
+            if (isset($_GET['txtSearch']) && !empty($_GET['txtSearch'])) {
+                $keyword = $_GET['txtSearch'];
+                $sqlProduct .= " AND sp.tensanpham LIKE :keyword";
             }
 
+            // Lọc theo thương hiệu
+            $brandID = '';
+            if (isset($_GET['brand']) && !empty($_GET['brand'])) {
+                $brandID = $_GET['brand'];
+                $sqlProduct .= " AND sp.mathuonghieu = :brand";
+            }
+
+            // Sắp xếp
+            $sortOption = isset($_GET['sort']) ? $_GET['sort'] : 'newest';
+            switch ($sortOption) {
+                case 'price-asc':
+                    $sqlProduct .= " ORDER BY ch.giatien ASC";
+                    break;
+                case 'price-desc':
+                    $sqlProduct .= " ORDER BY ch.giatien DESC";
+                    break;
+                case 'qty-desc':
+                    $sqlProduct .= " ORDER BY ch.soluong DESC";
+                    break;
+                default: // newest
+                    $sqlProduct .= " ORDER BY sp.masanpham DESC"; // ID lớn nhất là mới nhất
+                    break;
+            }
+
+            // --- 5. Chuẩn bị và Gán giá trị ---
+            $stmt = $pdo->prepare($sqlProduct);
+
+            if (!empty($keyword)) {
+                $stmt->bindValue(':keyword', '%' . $keyword . '%');
+            }
+            if (!empty($brandID)) {
+                $stmt->bindValue(':brand', $brandID);
+            }
+
+            // --- 6. Thực thi ---
+            $stmt->execute();
+            $dsSP = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // --- 7. Hiển thị dữ liệu (Giữ nguyên code hiển thị của bạn) ---
+            $count = 1;
+            if (count($dsSP) > 0) {
+                foreach ($dsSP as $sanpham) {
             ?>
-            
-            
+                    <tr>
+                        <td><?php echo $count; ?></td>
+                        <td><strong><?php echo $sanpham['tensanpham']; ?></strong></td>
+                        <td class="config-cell">
+                            - CPU: <?php echo $sanpham['cpu'] ?><br>
+                            - VGA: <?php echo $sanpham['vga'] ?><br>
+                            - RAM: <?php echo $sanpham['ram'] ?> / SSD: <?php echo $sanpham['ocung'] ?>
+                        </td>
+                        <td style="color: red; font-weight: bold;">
+                            <?php echo number_format($sanpham['giatien'], 0, ',', '.') ?> đ
+                        </td>
+                        <td><?php echo $sanpham['soluong'] ?></td>
+                        <td>
+                            <a href="javascript:void(0);" class="btn btn-edit btn-edit-product" data-id="<?php echo $sanpham['masanpham']; ?>">Sửa</a>
+                            <a href="#" class="btn btn-delete">Xóa</a>
+                        </td>
+                    </tr>
+            <?php
+                    $count++;
+                }
+            } else {
+                echo '<tr><td colspan="6" style="text-align:center;">Không tìm thấy sản phẩm nào!</td></tr>';
+            }
+            ?>
         </tbody>
     </table>
 </div>
