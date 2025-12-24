@@ -1,5 +1,5 @@
 <?php
-// Kiểm tra xem session đã được bật chưa, nếu chưa thì bật lên
+// Kiểm tra session
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
@@ -11,6 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
   <div class="header-container">
     <section class="header-bar">
       <ul>
+        
         <li>
           <a href="<?php echo $path; ?>/index.php">
             <img src="<?php echo $path; ?>/assets/images/logolaptop.png" alt="logo">
@@ -21,35 +22,39 @@ if (session_status() === PHP_SESSION_NONE) {
           <form action="<?php echo $path; ?>/pages/timkiem.php" method="GET">
             <input type="search" name="tuKhoa" class="header-bar-search" placeholder="Nhập tên laptop..." required>
           </form>
-          </li>
+        </li>
 
         <li>
           <?php if (isset($_SESSION['current_user'])): ?>
             
-              <img src="<?php echo $path; ?>/assets/images/user.png" alt="">
-
-              <div >
-                
+            <div class="user-logged-in">
+              <img src="<?php echo $path; ?>/assets/images/user.png" alt="" class="header-icon-user">
+              
+              <div class="user-info-box">
+                <span class="user-name">
                   <?php echo $_SESSION['current_user']['hoten']; ?>
-               
-                <a href="<?php echo $path; ?>/pages/dangxuat.php" style="font-size: 11px; color: #eee;">Đăng xuất</a>
+                </span>
+                <a href="<?php echo $path; ?>/pages/xuly_dangxuat.php" class="logout-link">(Đăng xuất)</a>
               </div>
             </div>
 
           <?php else: ?>
-            <a href="<?php echo $path; ?>/pages/dangnhap.php">
-              <img src="<?php echo $path; ?>/assets/images/user.png" alt="">
-                 Đăng nhập
+            
+            <a href="<?php echo $path; ?>/pages/dangnhap.php" class="user-login-link">
+              <img src="<?php echo $path; ?>/assets/images/user.png" alt="" class="header-icon-user">
+              <span>Đăng nhập</span>
             </a>
+
           <?php endif; ?>
         </li>
 
         <li>
-          <a href="<?php echo $path; ?>/pages/giohang.php">
-            <img src="<?php echo $path; ?>/assets/images/shopping-cart.png" alt="">
+          <a href="<?php echo $path; ?>/pages/giohang.php" class="cart-link">
+            <img src="<?php echo $path; ?>/assets/images/shopping-cart.png" alt="" class="header-icon-cart">
             Giỏ hàng
           </a>
         </li>
+
       </ul>
     </section>
   </div>

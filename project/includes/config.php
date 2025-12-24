@@ -7,7 +7,7 @@ try{
                        port=3307",
                        "root",
                        "");
-    echo "Kết nối thành công";
+
     // kt lỗi
 }catch(PDOException $ex){
     echo $ex->getMessage();

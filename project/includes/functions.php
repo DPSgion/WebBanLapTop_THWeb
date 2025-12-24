@@ -11,10 +11,10 @@ function formatCurrency($n) {
 // left join để khi ko có hình thì sp vẫn còn
 // group by để 1 masp chỉ lấy ra 1 sp duy nhất
 function getSanphamNoiBat($pdo) {
-    $sql = "SELECT sp.*, h.urlhinh, MIN(lc.giatien) as gia_thap_nhat 
+    $sql = "SELECT sp.*, h.urlhinh, MIN(ch.giatien) as gia_thap_nhat 
             FROM san_pham sp 
             LEFT JOIN hinh h ON sp.masanpham = h.masanpham 
-            JOIN cau_hinh lc ON sp.masanpham = lc.masanpham 
+            JOIN cau_hinh ch ON sp.masanpham = ch.masanpham 
             GROUP BY sp.masanpham 
             ORDER BY RAND() 
             LIMIT 5";
@@ -28,9 +28,9 @@ function getSanphamNoiBat($pdo) {
 
 // 3. Hàm lấy Sản phẩm Mới (Theo ID giảm dần)
 function getSanphamMoi($pdo) {
-    $sql = "SELECT sp.*, h.urlhinh, Min(lc.giatien) as gia_thap_nhat 
+    $sql = "SELECT sp.*, h.urlhinh, Min(ch.giatien) as gia_thap_nhat 
 		FROM san_pham sp 
-        JOIN cau_hinh lc on sp.masanpham=lc.masanpham
+        JOIN cau_hinh ch on sp.masanpham=ch.masanpham
         LEFT JOIN hinh h on h.masanpham=sp.masanpham
         GROUP BY sp.masanpham
         ORDER BY sp.masanpham DESC ";
@@ -113,5 +113,37 @@ function timKiemSanPham($pdo, $tuKhoa = null, $hang = null, $mucGia = null, $ram
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Hàm lấy thông tin sản phẩm theo mã
+function getChiTietSanPham($pdo, $id){
+    $sql= "SELECT * FROM san_pham
+            JOIN thuong_hieu on thuong_hieu.mathuonghieu=san_pham.mathuonghieu
+            where masanpham= :id";
+
+    $stmt = $pdo->prepare($sql);
+    //lấy giá trị $id truyền vào :id
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function getHinhAnhSanPham($pdo, $id){
+    $sql= "SELECT * FROM hinh where masanpham= :id";
+
+    $stmt = $pdo->prepare($sql);
+    //lấy giá trị $id truyền vào :id
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function getCauHinhtSanPham($pdo, $id){
+    $sql= "SELECT * FROM cau_hinh where masanpham= :id";
+
+    $stmt = $pdo->prepare($sql);
+    //lấy giá trị $id truyền vào :id
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 ?>
