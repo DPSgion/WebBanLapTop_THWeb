@@ -34,7 +34,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <span class="user-name">
                   <?php echo $_SESSION['current_user']['hoten']; ?>
                 </span>
-                <a href="<?php echo $path; ?>/pages/dangxuat.php" class="logout-link">(Đăng xuất)</a>
+                <a href="<?php echo $path; ?>/pages/xuly_dangxuat.php" class="logout-link">(Đăng xuất)</a>
               </div>
             </div>
 
