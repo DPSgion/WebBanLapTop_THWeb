@@ -9,8 +9,12 @@
 
 <div class="toolbar">
     <div class="search-box">
-        <input type="text" id="search-input" placeholder="Tìm kiếm thương hiệu ...">
-        <button class="btn-search">Tìm</button>
+        <form action="" method="get">
+            <input type="text" name="txtSearch" id="search-input" 
+                placeholder="Tìm kiếm thương hiệu ..."
+                value="<?php echo isset($_GET['txtSearch']) ? htmlspecialchars($_GET['txtSearch']) : ''; ?>">
+            <input type="submit" style="width: 50px" class="btn-search" name="btnSearch" value="Tìm"/>
+        </form>
     </div>
     <a  id="openModalBtn" class="btn btn-primary">Thêm thương hiệu mới</a>
 </div>
@@ -27,60 +31,77 @@
             </tr>
         </thead>
         <tbody>
-            <?php
-                $sql = "SELECT thuong_hieu.mathuonghieu, tenthuonghieu, trangthai, COUNT(san_pham.masanpham) as soluong
-                        FROM thuong_hieu
-                            LEFT JOIN san_pham on san_pham.mathuonghieu = thuong_hieu.mathuonghieu
-                        GROUP BY mathuonghieu, tenthuonghieu, trangthai
-                        ";
+        <?php
+            $keyword = '';
+            if (isset($_GET['txtSearch']) && !empty($_GET['txtSearch'])) {
+                $keyword = $_GET['txtSearch'];
+            }
 
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute();
+            $sql = "SELECT thuong_hieu.mathuonghieu, tenthuonghieu, trangthai, COUNT(san_pham.masanpham) as soluong
+                    FROM thuong_hieu
+                    LEFT JOIN san_pham on san_pham.mathuonghieu = thuong_hieu.mathuonghieu";
 
-                $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($keyword != '') {
+                $sql .= " WHERE tenthuonghieu LIKE :keyword ";
+            }
 
-                $count = 1;
-                foreach($data as $dong){
-                    ?>
-                    <tr>
-                        <td><?php echo $count; ?></td>
-                        <td><?php echo $dong['tenthuonghieu']; ?></td>
-                        <td><?php echo $dong['soluong']; ?></td>
-                        <td>
-                            <?php
-                            echo ($dong['trangthai'] == 0) ? 
-                                        "<span style='color: red'>Không hoạt động</span>" : 
-                                        "<span style='color: green'>Hoạt động</span>";  
-                            ?>
-                        </td>
-                        <td>
-                            <a href="#" 
-                                class="btn btn-edit btn-update" 
-                                data-id="<?php echo $dong['mathuonghieu']; ?>" 
-                                data-name="<?php echo $dong['tenthuonghieu']; ?>">
-                                Sửa
-                            </a>
-                            
-                            <a href="controller/brandController.php?doitrangthai&id=<?php echo $dong['mathuonghieu']; ?>&trangthaihientai=<?php echo $dong['trangthai']; ?>"
-                                class="btn btn-primary"
-                                onclick="return confirm('Bạn có chắc muốn đổi trạng thái ?')">
-                                Đổi trạng thái
-                            </a>
-                            
-                            <a href="controller/brandController.php?xoathuonghieu&id=<?php echo $dong['mathuonghieu']; ?>"
-                                class="btn btn-delete"
-                                onclick="return confirm('Bạn có chắc muốn xóa không ?')">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
+            $sql .= " GROUP BY thuong_hieu.mathuonghieu, tenthuonghieu, trangthai";
 
-                    <?php
-                    $count++;
-                }
+            $stmt = $pdo->prepare($sql);
 
-            ?>
-        </tbody>
+            if ($keyword != '') {
+                $stmt->bindValue(':keyword', '%' . $keyword . '%');
+            }
+
+            $stmt->execute();
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Nếu không tìm thấy kết quả nào
+            if ($stmt->rowCount() == 0) {
+                echo "<tr><td colspan='5' style='text-align:center; color:red;'>Không tìm thấy thương hiệu nào!</td></tr>";
+            }
+
+            $count = 1;
+            foreach($data as $dong){
+                ?>
+                <tr>
+                    <td><?php echo $count; ?></td>
+                    <td><?php echo $dong['tenthuonghieu']; ?></td>
+                    <td><?php echo $dong['soluong']; ?></td>
+                    <td>
+                        <?php
+                        echo ($dong['trangthai'] == 0) ? 
+                                "<span style='color: red'>Không hoạt động</span>" : 
+                                "<span style='color: green'>Hoạt động</span>";  
+                        ?>
+                    </td>
+                    <td>
+                        <a href="#" 
+                            class="btn btn-edit btn-update" 
+                            data-id="<?php echo $dong['mathuonghieu']; ?>" 
+                            data-name="<?php echo $dong['tenthuonghieu']; ?>">
+                            Sửa
+                        </a>
+                        
+                        <a href="controller/brandController.php?doitrangthai&id=<?php echo $dong['mathuonghieu']; ?>&trangthaihientai=<?php echo $dong['trangthai']; ?>"
+                            class="btn btn-primary"
+                            onclick="return confirm('Bạn có chắc muốn đổi trạng thái ?')">
+                            Đổi trạng thái
+                        </a>
+                        
+                        <a href="controller/brandController.php?xoathuonghieu&id=<?php echo $dong['mathuonghieu']; ?>"
+                            class="btn btn-delete"
+                            onclick="return confirm('Bạn có chắc muốn xóa không ?')">
+                            Xóa
+                        </a>
+                    </td>
+                </tr>
+
+                <?php
+                $count++;
+            }
+        ?>
+    </tbody>
     </table>
 </div>
 
