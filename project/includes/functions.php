@@ -14,7 +14,7 @@ function getSanphamNoiBat($pdo) {
     $sql = "SELECT sp.*, h.urlhinh, MIN(lc.giatien) as gia_thap_nhat 
             FROM san_pham sp 
             LEFT JOIN hinh h ON sp.masanpham = h.masanpham 
-            JOIN lua_chon_cau_hinh lc ON sp.masanpham = lc.masanpham 
+            JOIN cau_hinh lc ON sp.masanpham = lc.masanpham 
             GROUP BY sp.masanpham 
             ORDER BY RAND() 
             LIMIT 5";
@@ -30,7 +30,7 @@ function getSanphamNoiBat($pdo) {
 function getSanphamMoi($pdo) {
     $sql = "SELECT sp.*, h.urlhinh, Min(lc.giatien) as gia_thap_nhat 
 		FROM san_pham sp 
-        JOIN lua_chon_cau_hinh lc on sp.masanpham=lc.masanpham
+        JOIN cau_hinh lc on sp.masanpham=lc.masanpham
         LEFT JOIN hinh h on h.masanpham=sp.masanpham
         GROUP BY sp.masanpham
         ORDER BY sp.masanpham DESC 
@@ -46,7 +46,7 @@ function getSanphamGaming($pdo) {
     $sql = "SELECT sp.*, h.urlhinh, MIN(lc.giatien) as gia_thap_nhat   
             FROM san_pham sp 
             LEFT JOIN hinh h ON sp.masanpham = h.masanpham 
-            JOIN lua_chon_cau_hinh lc ON sp.masanpham = lc.masanpham 
+            JOIN cau_hinh lc ON sp.masanpham = lc.masanpham 
             WHERE sp.tensanpham LIKE '%Gaming%' OR sp.vga LIKE '%RTX%'
             GROUP BY sp.masanpham 
             LIMIT 5";

@@ -70,6 +70,9 @@ img {
     flex-direction: column;
     justify-content: space-between;
 }
+.product-card a{
+    text-decoration: none;
+}
 /* di chuột vô sản phẩm */
 .product-card:hover {
     transform: translateY(-2px);
@@ -110,7 +113,7 @@ img {
 /* Tên sản phẩm */
 .p-name {
     font-size: 13px;
-    font-weight: 600;
+    font-weight: bold;
     line-height: 1.4;
     margin-bottom: 5px;
     display: -webkit-box;
@@ -119,6 +122,7 @@ img {
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: 36px;
+    
 }
 
 /* Giá */

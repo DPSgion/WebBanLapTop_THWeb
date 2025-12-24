@@ -41,7 +41,7 @@ $dsGaming= getSanphamGaming($pdo);
                         <img src="<?php echo $imgURL; ?>" alt="Laptop">
                     </div>
                     <div class="p-specs"><?php echo $sp['cpu'] ." | " . $sp['vga']  ?></div>
-                    <div class="p-name"><?php echo $sp['tensanpham']  ?></div>
+                    <div class="p-name"  ><?php echo $sp['tensanpham']  ?></div>
                     <div class="p-price">
                         <div class="p-price-current"><?php echo formatCurrency($sp['gia_thap_nhat']) ?></div>
 
@@ -111,7 +111,7 @@ $dsGaming= getSanphamGaming($pdo);
                             <div class="cat-img-container">
                                 <img src="<?php echo $imgURL ?>" alt="Laptop">
                             </div>
-                            <div class="p-name" style="color: #d70018; font-size: 11px;"><?php echo $sp['masanpham']?></div>
+                    
                             <div class="p-name"><?php echo $sp['tensanpham']?></div>
                             <div class="p-price">
                                 <div class="p-price-current"><?php echo formatCurrency( $sp['gia_thap_nhat'])?></div>
