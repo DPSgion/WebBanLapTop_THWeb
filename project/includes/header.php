@@ -49,30 +49,10 @@ include_once "functions.php";
                 </div>
 
                 <div id="userDropdownContent" class="dropdown-content">
-                    <div class="dd-header">
-                        <h4>Thông báo đơn hàng</h4>
+                    <div class="dd-footer">
+                        <a href="<?php echo $path; ?>/pages/lichsudathang.php" class="btn-logout">Lịch sử đặt hàng</a>
                     </div>
 
-                    <div class="dd-body">
-                        <?php if ($so_luong > 0): ?>
-                            <?php foreach ($thongbao as $tb): ?>
-                                <a href="<?php echo $path; ?>/pages/chitiet_donhang.php?id=<?php echo $tb['madonhang']; ?>" class="dd-item">
-                                    <div class="dd-icon">📦</div>
-                                    <div class="dd-info">
-                                        <p class="dd-text">
-                                            <?php echo getNoiDungThongBao($tb['trangthai'], $tb['madonhang']); ?>
-                                        </p>
-                                        <span class="dd-time">
-                                            <?php echo date("d/m/Y H:i", strtotime($tb['ngaydathang'])); ?>
-                                        </span>
-                                    </div>
-                                </a>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <div style="padding: 15px; text-align: center; color: #999;">Không có đơn hàng mới</div>
-                        <?php endif; ?>
-                    </div>
-                    
                     <div class="dd-footer">
                         <a href="<?php echo $path; ?>/pages/xuly_dangxuat.php" class="btn-logout">Đăng xuất</a>
                     </div>
