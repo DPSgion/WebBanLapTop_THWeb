@@ -1376,3 +1376,11 @@ img {
     color: #d70018; 
     font-weight: bold;
 }
+
+/* ngăn người dùng sửa thông tin */
+input[readonly] {
+    background-color: #e9ecef; /* Màu xám nhạt */
+    cursor: not-allowed;       /* Hiện con trỏ cấm khi rê chuột vào */
+    color: #6c757d;            /* Màu chữ xám hơn chút */
+    border: 1px solid #ced4da;
+}

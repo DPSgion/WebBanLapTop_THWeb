@@ -233,22 +233,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartTotal();
 
 
-    function checkLoginAndRedirect() {
-    // Biến userDaDangNhap sẽ được lấy từ bên file PHP (global variable)
-    // Kiểm tra xem biến này có tồn tại và có bằng true không
-    if (typeof userDaDangNhap !== 'undefined' && userDaDangNhap === true) {
-        // TRƯỜNG HỢP 1: Đã đăng nhập
-        window.location.href = 'form_giao_hang.php'; 
-    } else {
-        // TRƯỜNG HỢP 2: Chưa đăng nhập
-        var xacNhan = confirm("Bạn cần đăng nhập để thực hiện chức năng này.\nBạn có muốn chuyển đến trang đăng nhập không?");
-
-        if (xacNhan) {
-            window.location.href = 'login.php'; 
-            }
-        }
-    }
-
 
 
     

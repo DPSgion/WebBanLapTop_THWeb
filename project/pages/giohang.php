@@ -17,20 +17,21 @@ if (!isset($_SESSION['cart'])) { $_SESSION['cart'] = []; }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['btn_buy']) || isset($_POST['btn_add']))) {
     
     $p_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
-    $p_config = isset($_POST['macauhinh']) ? trim($_POST['macauhinh']) : '';
+    // Sửa: Dùng intval vì mã cấu hình trong DB là số
+    $p_config = isset($_POST['macauhinh']) ? intval($_POST['macauhinh']) : 0; 
     $qty = 1;
 
-    if ($p_id > 0 && !empty($p_config)) {
-        // Gọi hàm từ functions.php
+    if ($p_id > 0 && $p_config > 0) { // Kiểm tra config > 0
+        // Gọi hàm từ functions.php để lấy thông tin hiển thị
         $item = getThongTinGioHang($pdo, $p_id, $p_config);
 
         if ($item) {
-            $key = $p_id . '_' . $p_config; // Key duy nhất: ID_MãCấuHình
+            // A. LƯU VÀO SESSION (Để hiển thị ngay lập tức)
+            $key = $p_id . '_' . $p_config; 
 
             if (isset($_SESSION['cart'][$key])) {
-                $_SESSION['cart'][$key]['qty'] += $qty; // Đã có -> Tăng số lượng
+                $_SESSION['cart'][$key]['qty'] += $qty; 
             } else {
-                // Chưa có -> Thêm mới
                 $_SESSION['cart'][$key] = [
                     'id'          => $p_id,
                     'macauhinh'   => $p_config,
@@ -39,12 +40,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['btn_buy']) || isset(
                     'price'       => $item['giatien'],
                     'config_desc' => $item['ram'] . ' - ' . $item['ocung'],
                     'qty'         => $qty,
-                    'selected'    => 1 // <--- THÊM DÒNG NÀY (Mặc định là được chọn)
+                    'selected'    => 1 
                 ];
             }
 
-            // --- [THÊM ĐOẠN NÀY ĐỂ SỬA LỖI F5 TỰ TĂNG] ---
-            // Chuyển hướng về chính trang hiện tại để xóa dữ liệu POST
+            // B. LƯU VÀO DATABASE (QUAN TRỌNG: Chỉ chạy khi đã đăng nhập)
+            // ------------------------------------------------------------------
+            if (isset($_SESSION['current_user'])) {
+                $user_id = $_SESSION['current_user']['userid'];
+                $price   = $item['giatien']; 
+
+                // Kiểm tra xem user này đã có sản phẩm cấu hình này trong DB chưa
+                $sql_check = "SELECT * FROM chi_tiet_gio_hang 
+                              WHERE userid = :uid AND macauhinh = :mch";
+                $stmt_check = $pdo->prepare($sql_check);
+                $stmt_check->execute([':uid' => $user_id, ':mch' => $p_config]);
+
+                if ($stmt_check->rowCount() > 0) {
+                    // TRƯỜNG HỢP 1: Đã có -> UPDATE cộng dồn số lượng
+                    $sql_update = "UPDATE chi_tiet_gio_hang 
+                                   SET soluong = soluong + :sl 
+                                   WHERE userid = :uid AND macauhinh = :mch";
+                    $stmt_update = $pdo->prepare($sql_update);
+                    $stmt_update->execute([':sl' => $qty, ':uid' => $user_id, ':mch' => $p_config]);
+                } else {
+                    // TRƯỜNG HỢP 2: Chưa có -> INSERT mới
+                    $sql_insert = "INSERT INTO chi_tiet_gio_hang (userid, macauhinh, soluong, giatien) 
+                                   VALUES (:uid, :mch, :sl, :gia)";
+                    $stmt_insert = $pdo->prepare($sql_insert);
+                    $stmt_insert->execute([
+                        ':uid' => $user_id,
+                        ':mch' => $p_config,
+                        ':sl'  => $qty,
+                        ':gia' => $price
+                    ]);
+                }
+            }
+            // ------------------------------------------------------------------
+
+            // Chuyển hướng để tránh lỗi F5 resubmit form
             header("Location: giohang.php");
             exit();
         }
@@ -173,12 +207,14 @@ foreach ($_SESSION['cart'] as $item) {
                     $u_phone = isset($_SESSION['current_user']) ? $_SESSION['current_user']['sdt'] : '';
                 ?>
                 <div class="form-group">
+                     <!-- Không cho phép sửa -->
                     <label>Họ và tên người nhận</label>
-                    <input type="text" name="hoten" value="<?php echo $u_name; ?>" required>
+                    <input type="text" name="hoten" value="<?php echo $u_name; ?>" readonly>
                 </div>
                 <div class="form-group">
-                    <label>Số điện thoại</label>
-                    <input type="tel" name="sdt" value="<?php echo $u_phone; ?>" required>
+                    <label>Số điện thoại</label> 
+                   
+                    <input type="tel" name="sdt" value="<?php echo $u_phone; ?>" readonly> 
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ giao hàng</label>
