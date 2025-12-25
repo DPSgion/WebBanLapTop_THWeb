@@ -1,3 +1,7 @@
+<?php
+    include("check_admin.php");
+?>
+
 <div class="main-title">
     <h2>Cài Đặt</h2>
 </div>

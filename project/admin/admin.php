@@ -1,3 +1,7 @@
+<?php
+    include("check_admin.php");
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 
