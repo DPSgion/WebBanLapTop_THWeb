@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../includes/config.php"; // Chứa biến kết nối $pdo
+include "../includes/functions.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -24,6 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // Đăng nhập thành công -> Lưu Session
             $_SESSION['current_user'] = $user; 
+
+            // ĐỒNG BỘ GIỎ HÀNG TỪ DB VÀO SESSION  
+            // Lấy những gì đã lưu trong DB bỏ vào giỏ hàng hiện tại
+            dongBoGioHangTuDB($pdo, $user['userid']);
             
             // Kiểm tra Role để chuyển hướng
             if ($user['role'] == 1) {

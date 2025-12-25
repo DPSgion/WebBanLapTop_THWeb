@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../includes/config.php"; // Chứa biến kết nối $pdo
+include "../includes/functions.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
