@@ -141,7 +141,7 @@ foreach ($_SESSION['cart'] as $item) {
                                 data-price="<?php echo $sp['price']; ?>">
                         </div>
                         <div class="ci-img">
-                            <img src="../assets/images/<?php echo $sp['image']; ?>" alt="Laptop">
+                            <img src="../upload/<?php echo $sp['image']; ?>" alt="Laptop">
                         </div>
                         <div class="ci-info">
                             <a href="chitietsanpham.php?id=<?php echo $sp['id']; ?>" class="ci-name">

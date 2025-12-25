@@ -57,7 +57,7 @@ if ($vga)
 
                 <?php foreach ($dsNoiBat as $sp) {
                     // Hiển thị ảnh, tên ảnh trong folder phải giống url trong DB
-                    $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
+                    $imgURL = $path . "/upload/" . $sp['urlhinh'];
 
                     // Để khi bấm vô laptop thì biết laptop nào được chọn
                     $linkSP = "pages/chitietsanpham.php?id=" . $sp['masanpham'];
@@ -143,7 +143,7 @@ if ($vga)
                 <div class="product-grid-5">
 
                     <?php foreach ($dsMoi as $sp) {
-                        $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
+                        $imgURL = $path . "/upload/" . $sp['urlhinh'];
                         $linkSP = "pages/chitietsanpham.php?id=" . $sp['masanpham'];
                         ?>
 

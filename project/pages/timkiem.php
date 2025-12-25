@@ -139,7 +139,7 @@ if ($vga)
                         <div class="product-grid-5">
                             <?php foreach ($dsKetQua as $sp):
                                 // Xử lý đường dẫn ảnh và link chi tiết
-                                $imgURL = $path . "/assets/images/" . $sp['urlhinh'];
+                                $imgURL = $path . "/upload/" . $sp['urlhinh'];
                                 $linkSP = "chitietsanpham.php?id=" . $sp['masanpham'];
                                 ?>
 
