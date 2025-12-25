@@ -1,7 +1,7 @@
 <?php
 // 1. Nhúng các file cấu hình và hàm chức năng
 // Lưu ý: Dùng ".." để lùi ra khỏi thư mục pages
-include("../includes/config.php");
+include("../config/configDB.php");
 include("../includes/functions.php");
 $path = "..";
 include("../includes/header.php");
@@ -91,13 +91,7 @@ if ($vga)
                     </div>
                 </div>
 
-                <div class="filter-dropdown">
-                    <div class="filter-btn">Card đồ hoạ <span class="arrow-down">▼</span></div>
-                    <div class="dropdown-content">
-                        <a href="timkiem.php?vga=nvdia">NVIDIA</a>
-                        <a href="timkiem.php?vga=amd">AMD</a>
-                    </div>
-                </div>
+                
 
             </div>
 

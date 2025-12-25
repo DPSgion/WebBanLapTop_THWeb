@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../includes/config.php"); // Đảm bảo đường dẫn đúng
+include("../config/configDB.php"); // Đảm bảo đường dẫn đúng
 
 // Kiểm tra user có đăng nhập không để xử lý DB
 $is_logged_in = isset($_SESSION['current_user']);

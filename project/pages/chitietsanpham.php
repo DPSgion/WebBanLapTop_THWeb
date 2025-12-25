@@ -1,5 +1,5 @@
 <?php
-include("../includes/config.php");
+include("../config/configDB.php");
 include("../includes/functions.php");
 $path = ".."; // File này nằm sâu hơn 1 cấp, cần lùi ra ngoài để gặp assets
 include("../includes/header.php");

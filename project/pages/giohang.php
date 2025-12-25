@@ -3,12 +3,12 @@
 if (session_status() === PHP_SESSION_NONE) {
      session_start(); 
     }
-include("../includes/config.php");
+include("../config/configDB.php");
 include("../includes/functions.php");
 $path = "..";
 
 $isLoggedIn = isset($_SESSION['current_user']) ? 'true' : 'false';
-include("../includes/header.php");
+
 
 // 2. Khởi tạo giỏ hàng nếu chưa có
 if (!isset($_SESSION['cart'])) { $_SESSION['cart'] = []; }
@@ -84,6 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['btn_buy']) || isset(
         }
     }
 }
+
+// 4. INCLUDE HEADER (SAU KHI ĐÃ XỬ LÝ LOGIC XONG)
+include("../includes/header.php");
 
 // 4. Tính tổng tiền
 $total_money = 0;

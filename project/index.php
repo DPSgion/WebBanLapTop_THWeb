@@ -1,5 +1,5 @@
 <?php
-include("includes/config.php");
+include("config/configDB.php");
 include("includes/functions.php");
 $path = "."; // File này nằm ngang hàng với thư mục assets
 include("includes/header.php");
@@ -116,14 +116,7 @@ if ($vga)
                     </div>
                 </div>
 
-                <div class="filter-dropdown">
-                    <div class="filter-btn">Card đồ hoạ <span class="arrow-down">▼</span></div>
-                    <div class="dropdown-content">
-                        <a href="pages/timkiem.php?vga=nvdia">NVIDIA</a>
-                        <a href="pages/timkiem.php?vga=amd">AMD</a>
-                    </div>
-                </div>
-
+                
             </div>
 
         </section>
