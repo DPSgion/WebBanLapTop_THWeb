@@ -27,7 +27,7 @@
                 <th width="5%">STT</th>
                 <th width="25%">Tên thương hiệu</th>
                 <th width="20%">Số lượng SP</th>
-                <th width="20%">Trạng thái</th>
+                <!-- <th width="20%">Trạng thái</th> -->
                 <th width="20%">Hành động</th>
             </tr>
         </thead>
@@ -69,13 +69,13 @@
                     <td><?php echo $count; ?></td>
                     <td><?php echo $dong['tenthuonghieu']; ?></td>
                     <td><?php echo $dong['soluong']; ?></td>
-                    <td>
+                    <!-- <td>
                         <?php
                         echo ($dong['trangthai'] == 0) ? 
                                 "<span style='color: red'>Không hoạt động</span>" : 
                                 "<span style='color: green'>Hoạt động</span>";  
                         ?>
-                    </td>
+                    </td> -->
                     <td>
                         <a href="#" 
                             class="btn btn-edit btn-update" 
@@ -84,11 +84,11 @@
                             Sửa
                         </a>
                         
-                        <a href="controller/brandController.php?doitrangthai&id=<?php echo $dong['mathuonghieu']; ?>&trangthaihientai=<?php echo $dong['trangthai']; ?>"
+                        <!-- <a href="controller/brandController.php?doitrangthai&id=<?php echo $dong['mathuonghieu']; ?>&trangthaihientai=<?php echo $dong['trangthai']; ?>"
                             class="btn btn-primary"
                             onclick="return confirm('Bạn có chắc muốn đổi trạng thái ?')">
                             Đổi trạng thái
-                        </a>
+                        </a> -->
                         
                         <a href="controller/brandController.php?xoathuonghieu&id=<?php echo $dong['mathuonghieu']; ?>"
                             class="btn btn-delete"
