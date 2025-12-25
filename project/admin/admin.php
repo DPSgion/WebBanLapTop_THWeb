@@ -29,7 +29,7 @@
         <ul>
             <li><a href="admin.php?page=quanlythuonghieu">Quản lý thương hiệu</a></li>
             <li><a href="admin.php?page=quanlysanpham">Quản lý sản phẩm</a></li>
-            <li><a href="">Quản lý đơn hàng</a></li>
+            <li><a href="admin.php?page=quanlydonhang">Quản lý đơn hàng</a></li>
             <li><a href="admin.php?page=caidat">Cài đặt</a></li>
         </ul>
     </div>
@@ -50,7 +50,7 @@
                 include 'quanlysanpham.php';
                 break;
             case 'quanlydonhang':
-                // include 'quanlydonhang.php';
+                include 'quanlydonhang.php';
                 break;
             case 'caidat':
                 include 'caidat.php';
