@@ -1,5 +1,34 @@
 <?php
     include("check_admin.php");
+    include("../config/configDB.php");
+
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    $user = $_SESSION['current_user'];
+    $sqlUser = "SELECT hoten FROM user WHERE userid=?";
+    $stmtUser = $pdo->prepare($sqlUser);
+    $stmtUser->execute([$user['userid']]);
+
+    $hoten = $stmtUser->fetchColumn();
+
+
+    function logout(){
+        if (isset($_SESSION['current_user'])) {
+            unset($_SESSION['current_user']); 
+        }
+
+        session_destroy();
+
+        // 4. Thông báo và chuyển hướng về trang chủ
+        echo "<script>
+                alert('Đăng xuất thành công! Hẹn gặp lại.');
+                window.location.href = '../index.php';
+            </script>";
+        exit();
+    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -20,8 +49,8 @@
             
         </a>
         <div class="header-right">
-            <p class="admin-name">Admin Name</p>
-            <a href="#" class="logout-btn">Đăng xuất</a>
+            <p class="admin-name">Xin chào <?php echo $hoten; ?></p>
+            <a href="../pages/xuly_dangxuat.php"  class="logout-btn">Đăng xuất</a>
         </div>
     </div>
 
