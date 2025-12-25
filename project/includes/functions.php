@@ -162,4 +162,50 @@ function getThongTinGioHang($pdo, $product_id, $macauhinh) {
     $stmt->execute(['id' => $product_id, 'macauhinh' => $macauhinh]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+/**
+ * Hàm lấy giỏ hàng từ Database và đổ vào Session
+ * Dùng khi người dùng vừa đăng nhập thành công
+ */
+function dongBoGioHangTuDB($pdo, $user_id) {
+    // 1. Chuẩn bị câu truy vấn lấy thông tin chi tiết
+    // JOIN qua 4 bảng để lấy đủ: Tên, Hình, Cấu hình, Giá
+    $sql = "SELECT c.macauhinh, c.soluong, 
+                   ch.masanpham, ch.giatien, ch.ram, ch.ocung,
+                   s.tensanpham, 
+                   h.urlhinh
+            FROM chi_tiet_gio_hang c
+            JOIN cau_hinh ch ON c.macauhinh = ch.macauhinh
+            JOIN san_pham s ON ch.masanpham = s.masanpham
+            LEFT JOIN hinh h ON s.masanpham = h.masanpham 
+            WHERE c.userid = :uid
+            GROUP BY c.macauhinh"; // Group by để tránh lặp hình ảnh
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':uid' => $user_id]);
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // 2. Khởi tạo session giỏ hàng nếu chưa có
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+
+    // 3. Đổ dữ liệu vào Session
+    foreach ($items as $item) {
+        // Tạo key duy nhất: id_macauhinh
+        $key = $item['masanpham'] . '_' . $item['macauhinh'];
+
+        // Gán vào session (Ghi đè hoặc thêm mới)
+        $_SESSION['cart'][$key] = [
+            'id'          => $item['masanpham'],
+            'macauhinh'   => $item['macauhinh'],
+            'name'        => $item['tensanpham'],
+            'image'       => $item['urlhinh'], // Nếu null thì nên có ảnh mặc định
+            'price'       => $item['giatien'],
+            'config_desc' => $item['ram'] . ' - ' . $item['ocung'],
+            'qty'         => $item['soluong'],
+            'selected'    => 1 // Mặc định tick chọn khi load lại
+        ];
+    }
+}
 ?>
