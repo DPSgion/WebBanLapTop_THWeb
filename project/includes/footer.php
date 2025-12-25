@@ -13,7 +13,7 @@
                     <ul>
                         <li><strong>ĐỒ ÁN WEB BÁN LAPTOP XỊN XÒ</strong></li>
                         <li>Địa chỉ: 180 Cao Lỗ</li>
-                        <li>Email:nguyendinhcu2004@gmail.com</li>
+                        <li>Email: webbanlaptop@gmail.com</li>
                     </ul>
                 </div>
 
@@ -29,9 +29,9 @@
                 <div class="footer-gioithieu">
                     <ul>
                         <li><strong>CHÍNH SÁCH</strong></li>
-                        <li>mua hàng không hoàn tiền</li>
+                        <li>Mua hàng không hoàn tiền</li>
                         <li>Có lỗi tự chịu</li>
-                        <li>giao hàng miễn phí với đơn hàng >100 triệu</li>
+                        <li>Giao hàng miễn phí với đơn hàng >100 triệu</li>
                         <li>Mua 1 tặng 1 tính tiền 2</li>
                     </ul>
                 </div>
