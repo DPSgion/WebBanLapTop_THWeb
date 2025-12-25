@@ -52,3 +52,36 @@ if (isset($_POST['btnCapNhatSDT'])){
                 </script>";
     }
 }
+
+// Cập nhật mật khẩu
+if (isset($_POST['btnCapNhatMK'])){
+    if (isset($_SESSION['current_user'])){
+        $userid = $_SESSION['current_user']['userid'];
+
+        $newPassword = $_POST['newPassword'];
+        $confirmPassword = $_POST['confirmPassword'];
+
+        try{
+            if ($newPassword == $confirmPassword){
+                $sqlCapNhatMK = "UPDATE user SET matkhau=? WHERE userid=?";
+                $stmtCapNhatMK = $pdo->prepare($sqlCapNhatMK);
+                $stmtCapNhatMK->execute([$newPassword, $userid]);
+                baoAlert("Cập nhật thành công");
+            }
+            else{
+                baoAlert("Mật khẩu không khớp ! Vui lòng nhập lại.");
+            }
+        }
+        catch (Exception $ex){
+            echo "<script>
+                    console.error('". $ex->getMessage() ."');
+                </script>";
+        }
+        
+    }
+    else{
+        baoAlert("Chưa đăng nhập");
+    }
+
+    
+}
