@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Là Admin
                 echo "<script>
                         alert('Xin chào Admin: " . $user['hoten'] . "');
-                        window.location.href = '../admin/index.php';
+                        window.location.href = '../admin/admin.php';
                       </script>";
             } else {
                 // Là Khách hàng

@@ -1,4 +1,5 @@
 <?php
+    include("check_admin.php");
     include("../config/configDB.php");
 ?>
 
