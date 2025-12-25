@@ -120,7 +120,7 @@ if (isset($_GET['view_id'])) {
                         if($row['trangthai']==1) echo '<span style="color:blue; font-weight:bold">Chờ xử lý</span>';
                         elseif($row['trangthai']==2) echo '<span style="color:orange; font-weight:bold">Đang giao</span>';
                         elseif($row['trangthai']==3) echo '<span style="color:green; font-weight:bold">Hoàn thành</span>';
-                        else echo '<span style="color:red; font-weight:bold">Đã hủy</span>';
+                        elseif($row['trangthai']==4) echo '<span style="color:red; font-weight:bold">Đã hủy</span>';
                     ?>
                 </td>
                 <td>
@@ -175,7 +175,7 @@ if (isset($_GET['view_id'])) {
                         if($tt==1) echo 'Chờ xử lý';
                         elseif($tt==2) echo 'Đang giao';
                         elseif($tt==3) echo 'Hoàn thành';
-                        else echo 'Đã hủy';
+                        elseif($tt=4) echo 'Đã hủy';
                     ?>
                 </p>
                 <p><strong>Tổng tiền:</strong> <span style="color:red; font-size:18px; font-weight:bold"><?php echo number_format($orderDetail['tongtien'], 0, ',', '.'); ?>đ</span></p>
@@ -185,7 +185,6 @@ if (isset($_GET['view_id'])) {
         <table class="table-admin">
             <thead>
                 <tr>
-                    <th>Hình</th>
                     <th>Sản phẩm</th>
                     <th>Cấu hình</th>
                     <th>SL</th>
@@ -195,10 +194,8 @@ if (isset($_GET['view_id'])) {
             </thead>
             <tbody>
                 <?php foreach ($orderItems as $item): 
-                    $imgUrl = !empty($item['urlhinh']) ? '../uploads/' . $item['urlhinh'] : 'https://via.placeholder.com/50';
                 ?>
                 <tr>
-                    <td><img src="<?php echo $imgUrl; ?>" width="50" style="object-fit:cover; border-radius:4px;"></td>
                     <td><?php echo $item['tensanpham']; ?></td>
                     <td><?php echo $item['ram'] . " / " . $item['ocung']; ?></td>
                     <td><?php echo $item['soluongsanpham']; ?></td>

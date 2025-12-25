@@ -4,7 +4,7 @@ include("../../config/configDB.php");
 function baoAlert($message){
     echo "<script>
             alert('". $message ."');
-            window.location.href = '../admin/admin.php?page=quanlydonhang';
+            window.location.href = '../admin.php?page=quanlydonhang';
           </script>";
 }
 
@@ -43,7 +43,7 @@ if (isset($_POST['btnCapNhatTrangThai'])){
         $stmt = $pdo->prepare($sql);
         
         if ($stmt->execute([$trangthai_moi, $madonhang])) {
-            header("Location: ../admin/admin.php?page=quanlydonhang");
+            header("Location: ../admin.php?page=quanlydonhang");
             exit();
         } else {
             baoAlert("Cập nhật trạng thái thất bại!");
