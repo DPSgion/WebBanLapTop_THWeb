@@ -65,7 +65,10 @@ if (isset($_POST['btnCapNhatMK'])){
             if ($newPassword == $confirmPassword){
                 $sqlCapNhatMK = "UPDATE user SET matkhau=? WHERE userid=?";
                 $stmtCapNhatMK = $pdo->prepare($sqlCapNhatMK);
-                $stmtCapNhatMK->execute([$newPassword, $userid]);
+
+                $matkhau_hash = password_hash($newPassword, PASSWORD_DEFAULT);
+
+                $stmtCapNhatMK->execute([$matkhau_hash, $userid]);
                 baoAlert("Cập nhật thành công");
             }
             else{
