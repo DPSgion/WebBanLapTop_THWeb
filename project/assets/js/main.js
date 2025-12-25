@@ -20,9 +20,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mở modal
     if (btnOpenModal) {
         btnOpenModal.addEventListener('click', function() {
-            if (modal) {
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden'; // Không cho scroll khi modal mở
+            // 1. KIỂM TRA ĐĂNG NHẬP TRƯỚC
+            // Biến userDaDangNhap lấy từ Global (do PHP truyền sang ở file HTML)
+            if (typeof userDaDangNhap !== 'undefined' && userDaDangNhap === true) {
+                
+                // --- TRƯỜNG HỢP 1: ĐÃ ĐĂNG NHẬP ---> MỞ MODAL ---
+                if (modal) {
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden'; // Khóa cuộn trang
+                }
+
+            } else {
+                
+                // --- TRƯỜNG HỢP 2: CHƯA ĐĂNG NHẬP ---> CẢNH BÁO ---
+                var xacNhan = confirm("Bạn cần đăng nhập để mua hàng.\nBạn có muốn chuyển đến trang đăng nhập không?");
+
+                if (xacNhan) {
+                    window.location.href = 'dangnhap.php'; 
+                }
+                // Không làm gì thêm (Modal sẽ không mở ra)
             }
         });
     }
@@ -215,6 +231,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Gọi 1 lần lúc load trang để đảm bảo tính đúng giá ban đầu
     updateCartTotal();
+
+
+    function checkLoginAndRedirect() {
+    // Biến userDaDangNhap sẽ được lấy từ bên file PHP (global variable)
+    // Kiểm tra xem biến này có tồn tại và có bằng true không
+    if (typeof userDaDangNhap !== 'undefined' && userDaDangNhap === true) {
+        // TRƯỜNG HỢP 1: Đã đăng nhập
+        window.location.href = 'form_giao_hang.php'; 
+    } else {
+        // TRƯỜNG HỢP 2: Chưa đăng nhập
+        var xacNhan = confirm("Bạn cần đăng nhập để thực hiện chức năng này.\nBạn có muốn chuyển đến trang đăng nhập không?");
+
+        if (xacNhan) {
+            window.location.href = 'login.php'; 
+            }
+        }
+    }
+
 
 
     

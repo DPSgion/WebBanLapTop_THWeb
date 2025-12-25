@@ -1,9 +1,13 @@
 <?php
 // 1. Khởi tạo session & Include
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
+if (session_status() === PHP_SESSION_NONE) {
+     session_start(); 
+    }
 include("../includes/config.php");
 include("../includes/functions.php");
 $path = "..";
+
+$isLoggedIn = isset($_SESSION['current_user']) ? 'true' : 'false';
 include("../includes/header.php");
 
 // 2. Khởi tạo giỏ hàng nếu chưa có
@@ -142,7 +146,7 @@ foreach ($_SESSION['cart'] as $item) {
                             <span>Tổng tiền:</span>
                             <span class="final-price"><?php echo formatCurrency($total_money); ?></span>
                         </div>
-                        <button class="btn-checkout" id="btn-open-modal">TIẾN HÀNH ĐẶT HÀNG</button>
+                        <button class="btn-checkout" id="btn-open-modal" >TIẾN HÀNH ĐẶT HÀNG</button>
                         <a href="../index.php" class="continue-shopping">Chọn thêm sản phẩm khác</a>
                     </div>
                 </div>
@@ -187,6 +191,11 @@ foreach ($_SESSION['cart'] as $item) {
             </form>
         </div>
     </div>
+
+    <script>
+    // 1. TRUYỀN BIẾN PHP SANG JS
+    var userDaDangNhap = <?php echo $isLoggedIn; ?>; 
+    </script>
 
     <script src="../assets/js/main.js"></script>
 </body>
