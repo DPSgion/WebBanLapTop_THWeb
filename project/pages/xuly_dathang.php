@@ -38,7 +38,7 @@ if (empty($items_to_buy)) {
 try {
     $pdo->beginTransaction();
 
-    // BƯỚC 1: CẬP NHẬT ĐỊA CHỈ (Code cũ - Giữ nguyên)
+    // BƯỚC 1: CẬP NHẬT ĐỊA CHỈ
     $stmt_check = $pdo->prepare("SELECT madiachi FROM dia_chi WHERE userid = :uid");
     $stmt_check->execute([':uid' => $user_id]);
     
@@ -52,9 +52,9 @@ try {
         $stmt_addr->execute([':uid' => $user_id, ':dc' => $diachi_moi]);
     }
 
-    // BƯỚC 2: TẠO ĐƠN HÀNG (Code cũ - Giữ nguyên)
+    // BƯỚC 2: TẠO ĐƠN HÀNG
     $sql_order = "INSERT INTO don_hang (userid, tongtien, trangthai, ngaydathang) 
-                  VALUES (:uid, :tt, 0, NOW())";
+                  VALUES (:uid, :tt, 1, NOW())";
     $stmt = $pdo->prepare($sql_order);
     $stmt->execute([':uid' => $user_id, ':tt'  => $total_money]);
     $order_id = $pdo->lastInsertId();
@@ -77,7 +77,18 @@ try {
         // 1. Trừ kho
         $stmt_stock->execute([':sl' => $item['qty'], ':mch' => $item['macauhinh']]);
         if ($stmt_stock->rowCount() == 0) {
-            throw new Exception("Sản phẩm " . $item['name'] . " đã hết hàng!");
+
+            $sqlCheckSL = "SELECT soluong FROM `cau_hinh` WHERE macauhinh=?";
+            $stmtCheckSL = $pdo->prepare($sqlCheckSL);
+            $stmtCheckSL->execute([$item['macauhinh']]);
+
+            $SL = $stmtCheckSL->fetchColumn();
+
+            echo "  <script>
+                        alert('Vui lòng chọn lại số lượng ! Tồn kho sản phẩm " . $item['name'] . " chỉ còn " . $SL . " sản phẩm.');
+                        window.location.href = 'giohang.php';
+                    </script>";
+            return;
         }
 
         // 2. Lưu chi tiết đơn hàng
