@@ -233,7 +233,32 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartTotal();
 
 
+    /* File: assets/js/main.js */
+    // Hàm bật tắt dropdown khi click vào tên
+    function toggleUserDropdown() {
+        var dropdown = document.getElementById("userDropdownContent");
+        if (dropdown) {
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+    }
 
+    // Hàm tự động đóng khi click ra ngoài vùng dropdown
+    window.onclick = function(event) {
+        // Nếu click không phải vào container chứa dropdown
+        if (!event.target.closest('.user-dropdown-container')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.style.display === "block") {
+                    openDropdown.style.display = "none";
+                }
+            }
+        }
+    }
 
     
 });

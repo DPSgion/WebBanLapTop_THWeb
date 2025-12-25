@@ -208,4 +208,32 @@ function dongBoGioHangTuDB($pdo, $user_id) {
         ];
     }
 }
+
+
+/**
+ * Lấy 5 đơn hàng gần nhất của user để hiện thông báo
+ */
+function getThongBaoDonHang($pdo, $userid) {
+    $sql = "SELECT madonhang, trangthai, ngaydathang, tongtien 
+            FROM don_hang 
+            WHERE userid = :uid 
+            ORDER BY madonhang DESC 
+            LIMIT 5"; // Chỉ lấy 5 tin mới nhất
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':uid' => $userid]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Hàm hỗ trợ đổi mã trạng thái sang nội dung thông báo
+ */
+function getNoiDungThongBao($trangthai, $madonhang) {
+    switch ($trangthai) {
+        case 1: return "Đơn hàng <b>#$madonhang</b> đang chờ xử lý.";
+        case 2: return "Đơn hàng <b>#$madonhang</b> đang trên đường giao";
+        case 3: return "Đơn hàng <b>#$madonhang</b> đã giao thành công";
+        case 4: return "Đơn hàng <b>#$madonhang</b> đã bị hủy.";
+        default: return "Cập nhật mới về đơn hàng <b>#$madonhang</b>.";
+    }
+}
 ?>
