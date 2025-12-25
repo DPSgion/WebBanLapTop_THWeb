@@ -146,4 +146,20 @@ function getCauHinhtSanPham($pdo, $id){
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+
+
+//  * Lấy thông tin sản phẩm theo cấu hình để thêm vào giỏ
+function getThongTinGioHang($pdo, $product_id, $macauhinh) {
+    // Truy vấn nối bảng sản phẩm, cấu hình và hình ảnh
+    $sql = "SELECT s.tensanpham, h.urlhinh, c.giatien, c.ram, c.ocung 
+            FROM san_pham s
+            JOIN cau_hinh c ON s.masanpham = c.masanpham
+            LEFT JOIN hinh h ON s.masanpham = h.masanpham
+            WHERE s.masanpham = :id AND c.macauhinh = :macauhinh
+            LIMIT 1"; // Chỉ lấy 1 ảnh đại diện
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id' => $product_id, 'macauhinh' => $macauhinh]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 ?>
