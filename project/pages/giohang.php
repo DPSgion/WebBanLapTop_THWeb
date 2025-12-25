@@ -34,7 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['btn_buy']) || isset(
                     'image'       => $item['urlhinh'],
                     'price'       => $item['giatien'],
                     'config_desc' => $item['ram'] . ' - ' . $item['ocung'],
-                    'qty'         => $qty
+                    'qty'         => $qty,
+                    'selected'    => 1 // <--- THÊM DÒNG NÀY (Mặc định là được chọn)
                 ];
             }
 
@@ -50,7 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['btn_buy']) || isset(
 $total_money = 0;
 $total_count = 0;
 foreach ($_SESSION['cart'] as $item) {
-    $total_money += $item['price'] * $item['qty'];
+    // Kiểm tra nếu chưa có key 'selected' thì gán mặc định là 1 (đề phòng giỏ hàng cũ)
+    if (!isset($item['selected'])) $item['selected'] = 1;
+
+    // Chỉ cộng tiền nếu sản phẩm được chọn (selected == 1)
+    if ($item['selected'] == 1) {
+        $total_money += $item['price'] * $item['qty'];
+    }
     $total_count += $item['qty'];
 }
 ?>
@@ -68,9 +75,10 @@ foreach ($_SESSION['cart'] as $item) {
         <div class="container">
             <div class="cart-header-title">
                 <a href="../index.php" class="back-home"> << Về trang chủ</a>
-                <h3>Giỏ hàng <span class="cart-count">(<?php echo $total_count; ?> sản phẩm)</span></h3>
+                <h3>Giỏ hàng </h3>
             </div>
 
+            <!-- Tiêu đề -->
             <?php if (!empty($_SESSION['cart'])): ?>
             <div class="cart-layout">
                 <div class="cart-left">
@@ -82,12 +90,14 @@ foreach ($_SESSION['cart'] as $item) {
                         <div class="ct-action">Xóa</div>
                     </div>
 
+                    <!-- Các ô checkbox sản phẩm -->
                     <?php foreach ($_SESSION['cart'] as $key => $sp): ?>
                     <div class="cart-item" id="item-<?php echo $key; ?>">
                         <div class="ci-checkbox">
-                            <input type="checkbox" class="item-checkbox" checked 
-                                   data-key="<?php echo $key; ?>" 
-                                   data-price="<?php echo $sp['price']; ?>">
+                            <input type="checkbox" class="item-checkbox" 
+                                <?php echo (isset($sp['selected']) && $sp['selected'] == 1) ? 'checked' : ''; ?> 
+                                data-key="<?php echo $key; ?>" 
+                                data-price="<?php echo $sp['price']; ?>">
                         </div>
                         <div class="ci-img">
                             <img src="../assets/images/<?php echo $sp['image']; ?>" alt="Laptop">

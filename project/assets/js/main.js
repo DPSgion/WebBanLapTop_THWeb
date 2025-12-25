@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const configButtons = document.querySelectorAll('.sp-right-cauhinh-btn');
     const priceDisplay = document.getElementById('display-price');
 
+    // --- HÀM HỖ TRỢ ĐỊNH DẠNG TIỀN TỆ (Giống PHP) ---
+    function formatCurrencyJS(amount) {
+        // Định dạng số: 25000000 -> 25.000.000
+        let formatted = new Intl.NumberFormat('vi-VN').format(amount);
+        return formatted + '₫';
+    }
+
     // Mở modal
     if (btnOpenModal) {
         btnOpenModal.addEventListener('click', function() {
@@ -63,22 +70,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // =====================
-    // Giỏ hàng
+    // XỬ LÝ GIỎ HÀNG 
     // =====================
 
-    // Hàm tính lại Tổng tiền (chỉ tính những ô checkbox được chọn)
+    // 1. Hàm tính lại Tổng tiền giỏ hàng
     function updateCartTotal() {
         let total = 0;
         let totalItems = 0;
 
-        // Lấy tất cả checkbox đang được chọn
+        // Chỉ tính những sản phẩm có checkbox được chọn
         const checkboxes = document.querySelectorAll('.item-checkbox:checked');
         
         checkboxes.forEach(chk => {
             const key = chk.getAttribute('data-key');
+            // Lấy giá gốc (dạng số nguyên)
             const price = parseFloat(chk.getAttribute('data-price'));
             
-            // Tìm ô input số lượng tương ứng
+            // Tìm ô input số lượng tương ứng để lấy số lượng hiện tại
             const qtyInput = document.querySelector(`.qty-input[data-key="${key}"]`);
             if (qtyInput) {
                 const qty = parseInt(qtyInput.value);
@@ -86,59 +94,71 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Đếm tổng số lượng item (dùng để hiển thị ở header)
+        // Đếm tổng số lượng item để hiển thị ở header
         document.querySelectorAll('.qty-input').forEach(input => {
             totalItems += parseInt(input.value);
         });
 
-        // Cập nhật giao diện
+        // Cập nhật hiển thị Tổng tiền cuối cùng
         const finalPriceEl = document.querySelector('.final-price');
         const cartCountEl = document.querySelector('.cart-count');
 
-        if (finalPriceEl) finalPriceEl.innerText = formatMoney(total);
-        if (cartCountEl) cartCountEl.innerText = `(${totalItems} sản phẩm)`;
+        if (finalPriceEl) {
+            finalPriceEl.innerText = formatCurrencyJS(total);
+        }
+        
+        if (cartCountEl) {
+            cartCountEl.innerText = `(${totalItems} sản phẩm)`;
+        }
     }
 
-    // ---  XỬ LÝ NÚT TĂNG GIẢM SỐ LƯỢNG (+ / -) ---
-
-    // Hàm xử lý chung cho việc đổi số lượng
+    // 2. Hàm xử lý khi bấm Tăng/Giảm số lượng
     function handleQuantityChange(btn, isIncrease) {
         const key = btn.getAttribute('data-key');
         const input = document.querySelector(`.qty-input[data-key="${key}"]`);
-        let currentQty = parseInt(input.value);
+        
+        if (!input) return;
 
-        // Tính toán số lượng mới
+        let currentQty = parseInt(input.value);
         let newQty = isIncrease ? currentQty + 1 : currentQty - 1;
+        
         if (newQty < 1) newQty = 1; // Không cho giảm dưới 1
 
-        // 1. Cập nhật giao diện (Số lượng & Thành tiền dòng đó)
+        // A. Cập nhật số lượng vào ô input
         input.value = newQty;
         
+        // B. Cập nhật "Thành tiền" của dòng đó (Item Total)
         const checkbox = document.querySelector(`.item-checkbox[data-key="${key}"]`);
-        const price = parseFloat(checkbox.getAttribute('data-price'));
-        const rowTotalEl = document.querySelector(`#item-${key} .item-total`);
+        const price = parseFloat(checkbox.getAttribute('data-price')); // Giá đơn vị
+        const rowTotalEl = document.querySelector(`#item-${key} .item-total`); // Ô thành tiền
         
         if (rowTotalEl) {
-            rowTotalEl.innerText = formatMoney(price * newQty);
+            // Tính thành tiền mới và format lại
+            rowTotalEl.innerText = formatCurrencyJS(price * newQty);
         }
 
-        // 2. Tính lại tổng tiền cả giỏ
+        // C. Tính lại tổng tiền cả giỏ hàng
         updateCartTotal();
 
-        // 3. Gửi AJAX để lưu vào Session (Backend)
-        // Dùng FormData để gửi dữ liệu dạng POST
+        // D. Gửi AJAX để lưu vào Session (Backend)
         const formData = new FormData();
-        formData.append('action', 'update');
+        // LƯU Ý QUAN TRỌNG: Phải dùng 'update_qty' để khớp với file PHP
+        formData.append('action', 'update_qty'); 
         formData.append('key', key);
         formData.append('qty', newQty);
 
         fetch('xuly_giohang.php', {
             method: 'POST',
             body: formData
-        }).catch(err => console.error('Lỗi cập nhật session:', err));
+        })
+        .then(res => res.text())
+        .then(data => {
+            // console.log('Update success:', data);
+        })
+        .catch(err => console.error('Lỗi cập nhật session:', err));
     }
 
-    // Gắn sự kiện click cho tất cả nút tăng/giảm
+    // Gắn sự kiện click cho các nút
     document.querySelectorAll('.btn-increase').forEach(btn => {
         btn.addEventListener('click', function() { handleQuantityChange(this, true); });
     });
@@ -147,9 +167,24 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() { handleQuantityChange(this, false); });
     });
 
-    // ---  XỬ LÝ CHECKBOX ---
+    // =====================
+    // XỬ LÝ CHECKBOX
+    // =====================
 
-    // Nút "Tất cả"
+    // Hàm gửi AJAX lưu trạng thái checkbox
+    function updateCheckboxSession(key, isChecked) {
+        const formData = new FormData();
+        formData.append('action', 'update_select');
+        formData.append('key', key);
+        formData.append('status', isChecked ? 1 : 0);
+
+        fetch('xuly_giohang.php', {
+            method: 'POST',
+            body: formData
+        }).catch(err => console.error('Lỗi:', err));
+    }
+
+    // Nút "Chọn tất cả"
     const checkAll = document.getElementById('check-all');
     const itemCheckboxes = document.querySelectorAll('.item-checkbox');
 
@@ -158,15 +193,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const isChecked = this.checked;
             itemCheckboxes.forEach(chk => {
                 chk.checked = isChecked;
+                updateCheckboxSession(chk.getAttribute('data-key'), isChecked);
             });
-            updateCartTotal(); // Tính lại tiền
+            updateCartTotal(); 
         });
     }
 
     // Checkbox từng món
     itemCheckboxes.forEach(chk => {
-        chk.addEventListener('change', updateCartTotal);
+        chk.addEventListener('change', function() {
+            updateCartTotal();
+            const key = this.getAttribute('data-key');
+            updateCheckboxSession(key, this.checked);
+            
+            // Logic phụ: Nếu bỏ chọn 1 cái thì bỏ chọn nút "Tất cả"
+            if (!this.checked && checkAll) {
+                checkAll.checked = false;
+            }
+        });
     });
+
+    // Gọi 1 lần lúc load trang để đảm bảo tính đúng giá ban đầu
+    updateCartTotal();
 
 
     
