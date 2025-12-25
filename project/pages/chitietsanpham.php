@@ -95,7 +95,7 @@ $dsCauHinh = getCauHinhtSanPham($pdo, $id);
             </tr>
             <tr>
               <td>Màn hình</td>
-              <td><?php echo $sp['manhinh'] ?></td>
+              <td><?php echo $sp['man_hinh'] ?></td>
             </tr>
             <tr>
               <td>Pin</td>
