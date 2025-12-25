@@ -37,7 +37,7 @@ $dsCauHinh = getCauHinhtSanPham($pdo, $id);
         <!-- Bên trái để hình laptop -->
         <div class="sp-left">
           <div class="sp-left-main">
-            <img src="../assets/images/<?php echo $hinh['urlhinh'] ?>" alt="" />
+            <img src="../upload/<?php echo $hinh['urlhinh'] ?>" alt="" />
           </div>
 
           <!-- <div class="sp-left-sub">
